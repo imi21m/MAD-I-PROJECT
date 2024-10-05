@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sponsor Find</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/s_home_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        .modal-dialog {
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
+        }
+        
+        .modal-body {
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+
+        /* Modal styling */
+        .modal-dialog {     
+            max-width: 80%; /* Adjust the width as needed */
+            margin: 1.75rem auto; /* Center the modal vertically and horizontally */
+        }
+
+        .modal-content {        
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .modal-header {     
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {       
+            padding: 20px;
+        }
+
+        .modal-title-centered {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+
+        
+        /* Campaign box styling */
+        .campaign-container {       
+            display: flex;
+            flex-direction: column;
+        }
+
+        .campaign-box {     
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .campaign-buttons {     
+            display: flex;
+            gap: 10px;
+        }
+
+        .view-btn, .request-btn, .unrequest-btn, .message-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .view-btn { background-color: #007bff; color: #fff; }
+        .request-btn { background-color: #28a745; color: #fff; }
+        .unrequest-btn { background-color: #dc3545; color: #fff; }
+        .message-btn { background-color: #17a2b8; color: #fff; }
+
+
+
+
+    </style>
+</head>
+<body>
+    <div class="background-animation">
+        <div class="circle-animation circle1"></div>
+        <div class="circle-animation circle2"></div>
+        <div class="circle-animation circle3"></div>
+        <div class="circle-animation circle4"></div>
+    </div>
+
+    <header>
+        <div class="profile-icon">
+            <a href="{{ url_for('sponsor_profile', sponsor_id=sponsor.SponsorID) }}">
+                <i class="fa-regular fa-user"></i>
+            </a>
+        </div>
+
+        <div class="home-icon">
+            <a href="{{ url_for('user_s_home', sponsor_id=sponsor_id) }}">
+                <i class="fa fa-house"></i>
+            </a>
+        </div>
+
+        <nav>
+            <ul class="nav_links">
+                <li><a href="{{ url_for('s_campaign', sponsor_id=sponsor_id) }}">Campaign</a></li>
+                <li><a href="{{ url_for('s_find', sponsor_id=sponsor_id) }}">Find</a></li>
+                
+            </ul>
+        </nav>
+        <a class="cta" href="{{url_for('logout')}}"><button>Logout</button></a>
+    </header>
+
+    <main>
+        <h1> Previous Campaigns </h1>
+
+        <div class="campaigns-container">
+            {% for campaign in campaigns %}
+                <div class="campaign-box" style="display: flex; justify-content: space-between; align-items: center; padding: 15px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px; background-color: #fff;">
+                    <h3>{{ campaign.Title }}</h3>
+                    <div style="display: flex; gap: 10px;">
+                        <a href="{{ url_for('s_find', sponsor_id=sponsor_id, view_campaign_id=campaign.CampaignID) }}" class="btn btn-info">View</a>
+                        
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </main>
+
+    
+    <!-- Modal for Viewing Campaign -->
+    {% if view_campaign %}
+    <div class="modal fade show" id="viewCampaignModal" tabindex="-1" role="dialog" aria-labelledby="viewCampaignModalLabel" aria-modal="true" style="display: block;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewCampaignModalLabel">View Campaign</h5>
+                    <a href="{{ url_for('s_find', sponsor_id=sponsor_id) }}" class="close" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </a>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Title:</strong> {{ view_campaign.Title }}</p>
+                    <p><strong>Description:</strong> {{ view_campaign.Description }}</p>
+                    <p><strong>Niche:</strong> {{ view_campaign.Niche }}</p>
+                    <p><strong>Start Date:</strong> {{ view_campaign.StartDate.strftime('%Y-%m-%d') }}</p>
+                    <p><strong>End Date:</strong> {{ view_campaign.EndDate.strftime('%Y-%m-%d') }}</p>
+                    <p><strong>Budget:</strong> {{ view_campaign.Budget }}</p>
+                    <p><strong>Visibility:</strong> {{ view_campaign.Visibility }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    
+    
+    
+
+
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+

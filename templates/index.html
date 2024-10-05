@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IESCP Login Page </title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body id="page1">
+    <nav>
+        <a href="#"><img src="/static/images/1719460057861.png" alt="Logo" style="width:100px; height:50px;"></a>
+
+    </nav>
+    <div class="form-wrapper">
+        <h2>Sign In</h2>
+        <form action="/login" method="POST">
+            <div class="form-control">
+                <input type="text" name="uname" required>
+                <label>Username</label>
+            </div>
+            <div class="form-control">
+                <input type="password" name="password" required>
+                <label>Password</label>
+            </div>
+            <button type="submit">Sign In</button>
+            <div class="form-help">
+                <div class="remember-me">
+                    <input type="checkbox" id="remember-me">
+                    <label for="remember-me">Remember me</label>
+                </div>
+                <a href="#">Forget password</a>
+            </div>
+        </form>
+        <p>New to IESCP? <a href="/register">Sign up now</a></p>
+        <br>
+        <p>{{msg}}</p>
+    </div>
+</body>
+</html>

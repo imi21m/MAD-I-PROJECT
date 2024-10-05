@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .welcome-container {
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .login-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .login-button:hover {
+            background-color: #0056b3;
+        }
+
+        .welcome-heading {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .welcome-description {
+            font-size: 18px;
+            color: #666;
+            line-height: 1.6;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-container">
+        
+        <h1 class="welcome-heading">Influencer Engagement and Sponsorship Coordination Platform</h1>
+        <p class="welcome-description">
+            Welcome to our cutting-edge platform designed to seamlessly connect Sponsors and Influencers. Here, Sponsors can effectively promote their products or services to a broad audience through dynamic and influential voices, while Influencers have the opportunity to monetize their reach and impact. Our platform fosters a mutually beneficial environment where creativity meets opportunity, allowing Sponsors to find the perfect match for their campaigns and Influencers to leverage their influence for financial gain. Join us in revolutionizing the way brands and influencers collaborate to create compelling, engaging, and impactful marketing campaigns.
+        </p>
+        
+    </div>
+    <a href="{{url_for('user_login')}}"><button class="login-button">Login</button></a>
+</body>
+</html>

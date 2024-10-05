@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Influencer Dashboard </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/s_home_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        .modal-dialog {
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
+        }
+        
+        .modal-body {
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+
+        /* Campaign Boxes */
+        .campaign-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .campaign-box {
+            display: flex;
+            align-items: center;
+            max-width: 750px;
+            background-color: #ffffff; /* White background for the campaign box */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            margin-bottom: 20px; /* Space below each campaign box */
+            width: 100%;
+            margin-left: 75px; /* Add margin from the left */
+        }
+
+        .campaign-details {
+            flex-grow: 1; /* Grow to take remaining space */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .campaign-name {
+            font-size: 1.1em;
+            color: #333;
+            margin-bottom: 10px; /* Add some space below the campaign name */
+        }
+
+        .campaign-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .view-btn {
+            padding: 10px 20px;
+            background-color: #0088a9;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .view-btn:hover {
+            background-color: #005580; /* Darker blue on hover */
+        }
+
+        .request-btn {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .request-btn:hover {
+            background-color: #1c7430; /* Darker green on hover */
+        }
+
+
+        .influencer-link {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .influencer-link:hover {
+            text-decoration: underline;
+        }
+
+    
+        </style>
+    
+</head>
+<body>
+
+    <div class="background-animation">
+        <!-- Circular animations -->
+        <div class="circle-animation circle1"></div>
+        <div class="circle-animation circle2"></div>
+        <div class="circle-animation circle3"></div>
+        <div class="circle-animation circle4"></div>
+    </div>
+
+
+    <header>
+        <!-- here icon of profile  -->
+        <div class="profile-icon">
+            <a href="{{ url_for('influencer_profile', influencer_id=influencer.InfluencerID) }}">
+                <i class="fa-regular fa-user"></i>
+            </a>
+        </div>
+
+        <div class="home-icon">
+            <a href="{{ url_for('user_i_home', influencer_id=influencer.InfluencerID) }}">
+                <i class="fa fa-house"></i>
+            </a>
+        </div>
+
+
+        <nav>
+            <ul class="nav_links">
+                <li><a href="{{ url_for('find_campaigns' , influencer_id=influencer.InfluencerID) }}">Find</a></li>
+                <li><a href="{{ url_for('prev_campaigns' , influencer_id=influencer.InfluencerID) }}">Prev_Campaign</a></li>
+                
+            </ul>
+        </nav>
+        <a class="cta" href="{{url_for('logout')}}"><button>Logout</button></a>
+    </header>
+
+    <main>
+        <h1>Welcome, {{influencer.user.FullName}}!</h1>
+        <h3>Active Campaigns</h3>
+        <div class="campaign-container">
+            {% for active in active_campaigns %}
+            <div class="campaign-box">
+                <div class="campaign-buttons">
+                    <a href="{{ url_for('user_i_home', campaign_id=active.campaign.CampaignID, influencer_id=influencer.InfluencerID, action='view') }}" class="view-btn">View</a>
+                </div>
+                <h3>{{ active.campaign.Title }} | {{ active.influencer.user.FullName }} | {{ active.Progress }}</h3>
+            </div>
+            {% endfor %}
+        </div>
+
+
+        <h3>New Requests</h3>
+        <div class="campaign-container">
+            {% for request in new_requests %}
+            <div class="campaign-box">
+                
+                <div class="campaign-buttons">
+                    
+                    <a href="{{ url_for('user_i_home', influencer_id=influencer.InfluencerID, request_id=request.RequestID, action='view') }}" class="view-btn">View</a>
+
+                    <form action="{{ url_for('accept_sponsor_request', request_id=request.RequestID ) }}" method="post">
+                        <input type="hidden" name="influencer_id" value="{{ influencer.InfluencerID }}">
+                        <button type="submit">Accept</button>
+                    </form>
+                    <form action="{{ url_for('reject_sponsor_request', request_id=request.RequestID) }}" method="post">
+                        <input type="hidden" name="influencer_id" value="{{ influencer.InfluencerID }}">
+                        <button type="submit">Reject</button>
+                    </form>
+                </div>
+                <h3>{{ request.campaign.Title }} | {{ request.sponsor.user.FullName }}</h3>
+                
+            </div>
+            {% endfor %}
+        </div>
+
+
+
+        <h3>Notifications</h3>
+        <div class="campaign-container">
+            {% for message in new_messages %}
+            <div class="campaign-box">
+                <div class="campaign-buttons">
+                    <a href="{{ url_for('user_i_home',influencer_id=influencer.InfluencerID, message_id=message.MessageID,sponsor_id = message.SenderID , action='view') }}" class="view-btn">Show</a>
+
+                    <a href="{{ url_for('user_i_home',influencer_id=influencer.InfluencerID, message_id=message.MessageID, action='reply') }}"><button type="submit">Reply</button></a>
+
+                </div>
+                <h3>
+                    {{ message.campaign.Title }}   |  
+                    <a href="{{ url_for('user_i_home', influencer_id=influencer.InfluencerID , sponsor_user_id=message.SenderID, action='view') }}" class="influencer-link">{{ message.sender.FullName }}</a>
+
+                </h3>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Modal for Viewing Campaign Details -->
+
+        {% if campaign_details  %}
+        <div class="modal fade show" id="influencerModal" tabindex="-1" role="dialog" aria-labelledby="viewCampaignModalLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewCampaignModalLabel">Campaign Details</h5>
+                        <a href="{{ url_for('user_i_home', influencer_id=influencer.InfluencerID) }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <h2>{{ campaign_details.Title }}</h2>
+                        <p><strong>Description:</strong> {{ campaign_details.Description }}</p>
+                        <p><strong>Start Date:</strong> {{ campaign_details.StartDate }}</p>
+                        <p><strong>End Date:</strong> {{ campaign_details.EndDate }}</p>
+                        <p><strong>Budget:</strong> {{ campaign_details.Budget }}</p>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('user_i_home', influencer_id=influencer.InfluencerID) }}" class="btn btn-secondary">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        
+
+
+        <!-- Modal for Viewing Campaign Details -->
+
+        {% if campaign_details and influencer_details %}
+        <div class="modal fade show" id="influencerModal" tabindex="-1" role="dialog" aria-labelledby="viewCampaignModalLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewCampaignModalLabel">Campaign Details</h5>
+                        <a href="{{ url_for('user_i_home', influencer_id=influencer.InfluencerID) }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <h2>{{ campaign_details.Title }}</h2>
+                        <p><strong>Description:</strong> {{ campaign_details.Description }}</p>
+                        <p><strong>Start Date:</strong> {{ campaign_details.StartDate }}</p>
+                        <p><strong>End Date:</strong> {{ campaign_details.EndDate }}</p>
+                        <p><strong>Budget:</strong> {{ campaign_details.Budget }}</p>
+                        <p><strong>Influencer:</strong> {{ influencer_details.user.FullName }}</p>
+                        <p><strong>Content Niche:</strong> {{ influencer_details.ContentNiche }}</p>
+                        <p><strong>Platform Presence:</strong> {{ influencer_details.PlatformPresence }}</p>
+                        <p><strong>Account URLs:</strong> {{ influencer_details.AccountURLs }}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('user_i_home', influencer_id=influencer.InfluencerID) }}" class="btn btn-secondary">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+
+        <!-- Reply Message Modal -->
+        {% if message %}
+        <div class="modal fade show" id="replyMessageModal" tabindex="-1" role="dialog" aria-labelledby="replyMessageLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="replyMessageLabel">Reply to {{ message.sender.FullName }}</h5>
+                        <a href="{{ url_for('user_i_home', influencer_id=influencer.InfluencerID) }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ url_for('reply_message') }}" method="post">
+                            <input type="hidden" name="sender_id" value="{{ influencer.UserID }}">
+                            <input type="hidden" name="receiver_id" value="{{ message.SenderID }}">
+                            <input type="hidden" name="campaign_id" value="{{ message.CampaignID }}">  <!-- Include the campaign ID -->
+                            <textarea name="content" placeholder="Enter your reply..." required></textarea>
+                            <button type="submit" class="btn btn-primary">Send</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('user_i_home', influencer_id=influencer.InfluencerID) }}" class="btn btn-secondary">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Modal for Viewing Message -->
+        {% if  message_details %}
+        <div class="modal fade show" id="viewMessageModal" tabindex="-1" role="dialog" aria-labelledby="viewMessageModalLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewMessageModalLabel">View Message</h5>
+                        <a href="{{ url_for('user_i_home', influencer_id=influencer.InfluencerID) }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <h2>Message</h2>
+                        <p><strong>Content:</strong> {{ message_details.Content }}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('user_i_home', influencer_id=influencer.InfluencerID) }}" class="btn btn-secondary">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+
+        <!-- Modal for Viewing Influencer -->
+        {% if user_details and sponsor_show %}
+        <div class="modal fade show" id="ViewinfluencerModal" tabindex="-1" role="dialog" aria-labelledby="viewInfluencerLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewInfluencerLabel">View Influencer</h5>
+                        <a href="{{ url_for('user_i_home', influencer_id=influencer.InfluencerID) }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <h2>{{ user_details.FullName }}</h2>
+                            <p><strong>Email:</strong> {{ user_details.Email }}</p>
+                            <p><strong>Phone:</strong> {{ user_details.PhoneNo }}</p>
+                            <p><strong>Company Name:</strong> {{ sponsor_show.CompanyName }}</p>
+                            <p><strong>Company Website:</strong> {{ sponsor_show.CompanyWebsite }}</p>
+                            <p><strong>Industry:</strong> {{ sponsor_show.IndustryCategory }}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('user_i_home', influencer_id=influencer.InfluencerID) }}" class="btn btn-secondary">Close</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+
+
+        
+
+
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+</body>
+</html>
+

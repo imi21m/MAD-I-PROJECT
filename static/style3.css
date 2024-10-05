@@ -1,0 +1,148 @@
+/* Full-page background animation */
+/* Full-page background animation */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.background-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #f0f0f0; /* Fallback color */
+    overflow: hidden;
+    z-index: -1;
+}
+
+/* Each circle animation */
+.circle-animation {
+    position: absolute;
+    width: 170px; /* Adjust size of the circle */
+    height: 170px; /* Adjust size of the circle */
+    border-radius: 50%; /* Ensures it's a circle */
+    background-color: transparent;
+    background-size: cover;
+    background-position: center;
+    animation: animateCircle linear infinite;
+}
+
+/* Positioning of circles and background images */
+.circle1 {
+    top: calc(50% - 200px); /* Adjust position */
+    left: calc(50% - 200px); /* Adjust position */
+    background-image: url('images/photo-1620403724159-40363e84a155.jpeg'); /* Replace with your image path */
+    animation-duration: 10s; /* Duration of one orbit */
+    animation-delay: 0s; /* Delay for animation start */
+}
+
+.circle2 {
+    top: calc(50% - 140px); /* Adjust position */
+    left: calc(50% - 140px); /* Adjust position */
+    background-image: url('images/photo-1620403724129-23fc81e1e0df.jpeg'); /* Replace with your image path */
+    animation-duration: 15s; /* Duration of one orbit */
+    animation-delay: 3s; /* Delay for animation start */
+}
+
+.circle3 {
+    top: calc(50% - 80px); /* Adjust position */
+    left: calc(50% - 80px); /* Adjust position */
+    background-image: url('images/premium_photo-1684433905257-bd5b0556f31e.jpeg'); /* Replace with your image path */
+    animation-duration: 20s; /* Duration of one orbit */
+    animation-delay: 6s; /* Delay for animation start */
+}
+
+.circle4 {
+    top: calc(50% - 20px); /* Adjust position */
+    left: calc(50% - 20px); /* Adjust position */
+    background-image: url('images/photo-1627244714766-94dab62ed964.jpeg'); /* Replace with your image path */
+    animation-duration: 25s; /* Duration of one orbit */
+    animation-delay: 9s; /* Delay for animation start */
+}
+
+/* Individual animations for each circle */
+@keyframes animateCircle {
+    0% {
+        transform: rotate(0deg) translateX(200px) rotate(0deg); /* Initial position */
+    }
+    100% {
+        transform: rotate(360deg) translateX(200px) rotate(-360deg); /* One full orbit */
+    }
+}
+
+
+
+.container {
+    position: relative;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.8); /* Transparent white background */
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.input-box, .form-group {
+    margin-bottom: 15px;
+}
+
+.input-box label, .form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-box input, .form-group input, .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.gender-category {
+    margin-bottom: 15px;
+}
+
+.gender-category label {
+    margin-right: 10px;
+}
+
+.alert {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.query {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+
+.alert p {
+    margin: 0;
+}
+
+.button-container {
+    text-align: center;
+}
+
+.button-container button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background: #007bff;
+    color: #fff;
+    cursor: pointer;
+}
+
+.button-container button:hover {
+    background: #0056b3;
+}
+

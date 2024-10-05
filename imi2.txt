@@ -1,0 +1,157 @@
+(venv) flask db upgrade
+
+IESCP application started...
+IESCP application started...
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+(venv) flask db current
+
+IESCP application started...
+IESCP application started...
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+6dfcd2597dda (head)
+(venv) flask db migrate -m "Add SponsorID column to CampaignRequest model"
+
+IESCP application started...
+IESCP application started...
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.env] No changes in schema detected.
+(venv) flask db upgrade
+
+IESCP application started...
+IESCP application started...
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+(venv) flask db upgrade
+IESCP application started...
+IESCP application started...
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+(venv) flask db migrate -m "Add SponsorID column to CampaignRequest model"
+
+IESCP application started...
+IESCP application started...
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.autogenerate.compare] Detected added column 'campaign_request.SponsorID'
+INFO  [alembic.autogenerate.compare] Detected added foreign key (SponsorID)(SponsorID) on table campaign_request
+  Generating /Users/mdimrananwar/Desktop/MAD I PROJECT/migrations/versio
+  ns/580419315288_add_sponsorid_column_to_campaignrequest_.py ...  done
+(venv) flask db upgrade
+
+IESCP application started...
+IESCP application started...
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade 6dfcd2597dda -> 580419315288, Add SponsorID column to CampaignRequest model
+Traceback (most recent call last):
+  File "/Users/mdimrananwar/Desktop/MAD I PROJECT/venv/bin/flask", line 10, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/Users/mdimrananwar/Desktop/MAD I PROJECT/venv/lib/python3.11/site-packages/flask/cli.py", line 1105, in main
+    cli.main()
+  File "/Users/mdimrananwar/Desktop/MAD I PROJECT/venv/lib/python3.11/site-packages/click/core.py", line 1078, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/Users/mdimrananwar/Desktop/MAD I PROJECT/venv/lib/python3.11/site-packages/click/core.py", line 1688, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdimrananwar/Desktop/MAD I PROJECT/venv/lib/python3.11/site-packages/click/core.py", line 1688, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdimrananwar/Desktop/MAD I PROJECT/venv/lib/python3.11/site-packages/click/core.py", line 1434, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdimrananwar/Desktop/MAD I PROJECT/venv/lib/python3.11/site-packages/click/core.py", line 783, in invoke
+    return __callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdimrananwar/Desktop/MAD I PROJECT/venv/lib/python3.11/site-packages/click/decorators.py", line 33, in new_func
+    return f(get_current_context(), *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdimrananwar/Desktop/MAD I PROJECT/venv/lib/python3.11/site-packages/flask/cli.py", line 386, in decorator
+    return ctx.invoke(f, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdimrananwar/Desktop/MAD I PROJECT/venv/lib/python3.11/site-packages/click/core.py", line 783, in invoke
+    return __callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdimrananwar/Desktop/MAD I PROJECT/venv/lib/python3.11/site-packages/flask_migrate/cli.py", line 154, in upgrade
+    _upgrade(directory, revision, sql, tag, x_arg)
+  File "/Users/mdimrananwar/Desktop/MAD I PROJECT/venv/lib/python3.11/site-packages/flask_migrate/__init__.py", line 111, in wrapped
+    f(*args, **kwargs)
+  File "/Users/mdimrananwar/Desktop/MAD I PROJECT/venv/lib/python3.11/site-packages/flask_migrate/__init__.py", line 200, in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+  File "/Users/mdimrananwar/Desktop/MAD I PROJECT/venv/lib/python3.11/site-packages/alembic/command.py", line 406, in upgrade
+    script.run_env()
+  File "/Users/mdimrananwar/Desktop/MAD I PROJECT/venv/lib/python3.11/site-packages/alembic/script/base.py", line 582, in run_env
+    util.load_python_file(self.dir, "env.py")
+  File "/Users/mdimrananwar/Desktop/MAD I PROJECT/venv/lib/python3.11/site-packages/alembic/util/pyfiles.py", line 95, in load_python_file
+    module = load_module_py(module_id, path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mdimrananwar/Desktop/MAD I PROJECT/venv/lib/python3.11/site-packages/alembic/util/pyfiles.py", line 113, in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/Users/mdimrananwar/Desktop/MAD I PROJECT/migrations/env.py", line 113, in <module>
+    run_migrations_online()
+  File "/Users/mdimrananwar/Desktop/MAD I PROJECT/migrations/env.py", line 107, in run_migrations_online
+    context.run_migrations()
+  File "<string>", line 8, in run_migrations
+  File "/Users/mdimrananwar/Desktop/MAD I PROJECT/venv/lib/python3.11/site-packages/alembic/runtime/environment.py", line 946, in run_migrations
+    self.get_context().run_migrations(**kw)
+  File "/Users/mdimrananwar/Desktop/MAD I PROJECT/venv/lib/python3.11/site-packages/alembic/runtime/migration.py", line 628, in run_migrations
+    step.migration_fn(**kw)
+  File "/Users/mdimrananwar/Desktop/MAD I PROJECT/migrations/versions/580419315288_add_sponsorid_column_to_campaignrequest_.py", line 21, in upgrade
+    with op.batch_alter_table('campaign_request', schema=None) as batch_op:
+  File "/Users/mdimrananwar/anaconda3/lib/python3.11/contextlib.py", line 144, in __exit__
+    next(self.gen)
+  File "/Users/mdimrananwar/Desktop/MAD I PROJECT/venv/lib/python3.11/site-packages/alembic/operations/base.py", line 398, in batch_alter_table
+    impl.flush()
+  File "/Users/mdimrananwar/Desktop/MAD I PROJECT/venv/lib/python3.11/site-packages/alembic/operations/batch.py", line 162, in flush
+    fn(*arg, **kw)
+  File "/Users/mdimrananwar/Desktop/MAD I PROJECT/venv/lib/python3.11/site-packages/alembic/operations/batch.py", line 669, in add_constraint
+    raise ValueError("Constraint must have a name")
+ValueError: Constraint must have a name
+(venv) flask db upgrade
+IESCP application started...
+IESCP application started...
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade 6dfcd2597dda -> 580419315288, Add SponsorID column to CampaignRequest model
+(venv) 
+
+----------------------------------Add Flag tables ----------------------------------
+
+(venv) flask db upgrade
+
+IESCP application started...
+IESCP application started...
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+(venv) flask db current
+IESCP application started...
+IESCP application started...
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+580419315288 (head)
+(venv) flask db migrate -m "Add flagged entities tables"
+
+IESCP application started...
+IESCP application started...
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.autogenerate.compare] Detected added table 'flagged_influencer'
+INFO  [alembic.autogenerate.compare] Detected added table 'flagged_sponsor'
+INFO  [alembic.autogenerate.compare] Detected added table 'flagged_campaign'
+  Generating /Users/mdimrananwar/Desktop/MAD I PROJECT/migrations/versio
+  ns/53d1004a8013_add_flagged_entities_tables.py ...  done
+(venv) flask db upgrade
+
+IESCP application started...
+IESCP application started...
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade 580419315288 -> 53d1004a8013, Add flagged entities tables
+

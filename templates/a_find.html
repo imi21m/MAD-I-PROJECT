@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Find Page </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/s_home_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+
+        /* Search and Filter */
+        .search-filter-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .search-bar {
+            display: flex;
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .search-bar input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-right: 5px;
+            max-width: 200px;
+        }
+
+        .search-bar button {
+            padding: 10px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+
+        .modal-dialog {
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
+        }
+        
+        .modal-body {
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+
+        /* Campaign Boxes */
+        .campaign-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .campaign-box {
+            display: flex;
+            align-items: center;
+            max-width: 750px;
+            background-color: #ffffff; /* White background for the campaign box */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            margin-bottom: 20px; /* Space below each campaign box */
+            width: 100%;
+            margin-left: 75px; /* Add margin from the left */
+        }
+
+        .campaign-details {
+            flex-grow: 1; /* Grow to take remaining space */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .campaign-name {
+            font-size: 1.1em;
+            color: #333;
+            margin-bottom: 10px; /* Add some space below the campaign name */
+        }
+
+        .campaign-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .view-btn {
+            padding: 10px 20px;
+            background-color: #0088a9;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .view-btn:hover {
+            background-color: #005580; /* Darker blue on hover */
+        }
+
+        .request-btn {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .request-btn:hover {
+            background-color: #1c7430; /* Darker green on hover */
+        }
+
+
+        
+
+    
+        </style>
+</head>
+<body>
+
+    <div class="background-animation">
+        <!-- Circular animations -->
+        <div class="circle-animation circle1"></div>
+        <div class="circle-animation circle2"></div>
+        <div class="circle-animation circle3"></div>
+        <div class="circle-animation circle4"></div>
+    </div>
+
+
+    <header>
+        
+
+        <div class="home-icon">
+            <a href="{{ url_for('user_a_home') }}">
+                <i class="fa fa-house"></i>
+            </a>
+        </div>
+
+
+        <nav>
+            <ul class="nav_links">
+                <li><a href="{{ url_for('user_a_find') }}">Find</a></li>
+                <li><a href="{{ url_for('admin_dashboard') }}">Stats</a></li>
+            </ul>
+        </nav>
+        <a class="cta" href="{{url_for('logout')}}"><button>Logout</button></a>
+    </header>
+
+    <main>
+
+        <div class="search-filter-container">
+            <form class="search-bar" action="{{ url_for('user_a_find') }}" method="GET">
+                <input type="text" name="search" placeholder="Search" value="{{ request.args.get('search', '') }}">
+                <button type="submit">Search</button>
+            </form>
+            
+        </div>
+
+        <h3>Campaigns</h3>
+        <div class="campaign-container">
+            {% for campaign in campaigns %}
+            <div class="campaign-box">
+                <div class="campaign-buttons">
+                    <a href="{{ url_for('user_a_find', sponsor_id=campaign.SponsorID, campaign_id=campaign.CampaignID, action='view') }}" class="view-btn">View</a>
+                    
+                    {% if campaign.is_flagged %}
+                        <button class="btn btn-secondary" disabled>Flagged</button>
+                    {% else %}
+                        <form action="{{ url_for('user_a_find') }}" method="POST">
+                            <input type="hidden" name="campaign_id" value="{{ campaign.CampaignID }}">
+                            <input type="hidden" name="flag_type" value="campaign">
+                            <button type="submit" class="btn btn-warning">Flag</button>
+                        </form>
+
+                    {% endif %}
+                </div>
+
+                <h3>{{ campaign.Title }} | {{ campaign.sponsor.user.FullName }}</h3>
+            </div>
+            {% endfor %}
+        </div>
+
+
+
+        <h3>Sponsors</h3>
+        <div class="campaign-container">
+            {% for sponsor in sponsors %}
+            <div class="campaign-box">
+                <div class="campaign-buttons">
+                    <a href="{{ url_for('user_a_find', sponsor_id=sponsor.SponsorID,  action='view') }}" class="view-btn">View</a>
+                    
+
+                    {% if sponsor.is_flagged %}
+                        <button class="btn btn-secondary" disabled>Flagged</button>
+                    {% else %}
+                        <form action="{{ url_for('user_a_find') }}" method="POST">
+                            <input type="hidden" name="sponsor_id" value="{{ sponsor.SponsorID }}">
+                            <input type="hidden" name="flag_type" value="sponsor">
+                            <button type="submit" class="btn btn-warning">Flag</button>
+                        </form>
+                    {% endif %}
+                    
+                    
+                </div>
+
+                <h3> {{ sponsor.user.FullName }}</h3>
+            </div>
+            {% endfor %}
+        </div>
+
+        <h3>Influencers</h3>
+        <div class="campaign-container">
+            {% for influencer in influencers %}
+            <div class="campaign-box">
+                <div class="campaign-buttons">
+                    <a href="{{ url_for('user_a_find', influencer_id=influencer.InfluencerID,  action='view') }}" class="view-btn">View</a>
+                    
+
+                    {% if influencer.is_flagged %}
+                        <button class="btn btn-secondary" disabled>Flagged</button>
+                    {% else %}
+                        <form action="{{ url_for('user_a_find') }}" method="POST">
+                            <input type="hidden" name="influencer_id" value="{{ influencer.InfluencerID }}">
+                            <input type="hidden" name="flag_type" value="influencer">
+                            <button type="submit" class="btn btn-warning">Flag</button>
+                        </form>
+                    {% endif %}
+                    
+                    
+                </div>
+
+                <h3> {{ influencer.user.FullName }}</h3>
+            </div>
+            {% endfor %}
+        </div>
+
+        
+
+
+
+        <!-- Modal for Viewing Campaign Details -->
+        {% if campaign_details and not flagging_campaign %}
+        <div class="modal show" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="viewCampaignModalLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewCampaignModalLabel">Campaign Details</h5>
+                        <a href="{{ url_for('user_a_find') }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <h2>{{ campaign_details.Title }}</h2>
+                        <p><strong>Description:</strong> {{ campaign_details.Description }}</p>
+                        <p><strong>Start Date:</strong> {{ campaign_details.StartDate }}</p>
+                        <p><strong>End Date:</strong> {{ campaign_details.EndDate }}</p>
+                        <p><strong>Budget:</strong> {{ campaign_details.Budget }}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('user_a_find') }}" class="btn btn-secondary">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+
+        <!-- Modal for Viewing Sponsor Details -->
+        {% if sponsor_details and not flagging_campaign %}
+        <div class="modal show" id="influencerModal" tabindex="-1" role="dialog" aria-labelledby="viewSponsorModalLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewSponsorModalLabel">Sponsor Details</h5>
+                        <a href="{{ url_for('user_a_find') }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <h2>{{ sponsor_details.user.FullName }}</h2>
+                        <p><strong>Email:</strong> {{ sponsor_details.user.Email }}</p>
+                        <p><strong>PhoneNo:</strong> {{ sponsor_details.user.PhoneNo }}</p>
+                        <p><strong>Gender:</strong> {{ sponsor_details.user.Gender }}</p>
+                        <p><strong>Nationality:</strong> {{ sponsor_details.user.Nationality }}</p>
+                        <p><strong>CompanyName:</strong> {{ sponsor_details.CompanyName }}</p>
+                        <p><strong>CompanyWebsite:</strong> {{ sponsor_details.CompanyWebsite }}</p>
+                        <p><strong>IndustryCategory:</strong> {{ sponsor_details.IndustryCategory }}</p>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('user_a_find') }}" class="btn btn-secondary">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+
+        <!-- Modal for Viewing Influencer Details -->
+        {% if influencer_details and not flagging_campaign %}
+        <div class="modal show" id="influencerModal" tabindex="-1" role="dialog" aria-labelledby="viewInfluencerModalLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewInfluencerModalLabel">Influencer Details</h5>
+                        <a href="{{ url_for('user_a_find') }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <h2>{{ influencer_details.user.FullName }}</h2>
+                        <p><strong>Email:</strong> {{ influencer_details.user.Email }}</p>
+                        <p><strong>PhoneNo:</strong> {{ influencer_details.user.PhoneNo }}</p>
+                        <p><strong>Gender:</strong> {{ influencer_details.user.Gender }}</p>
+                        <p><strong>Nationality:</strong> {{ influencer_details.user.Nationality }}</p>
+                        <p><strong>AccountURLs:</strong> {{ influencer_details.AccountURLs }}</p>
+                        <p><strong>ContentNiche:</strong> {{ influencer_details.ContentNiche }}</p>
+                        
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('user_a_find') }}" class="btn btn-secondary">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+
+        <!-- Flag Campaign Modal -->
+        {% if flagging_campaign %}
+        <div class="modal show" id="flagCampaignModal" tabindex="-1" role="dialog" aria-labelledby="flagCampaignModalLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="flagCampaignModalLabel">Flag Campaign</h5>
+                        <a href="{{ url_for('user_a_find') }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <p>Please provide a reason for flagging this campaign:</p>
+                        <form action="{{ url_for('flag_campaign', campaign_id=campaign_id) }}" method="POST">
+                            <div class="form-group">
+                                <textarea name="reason" class="form-control" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-danger">Submit</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('user_a_find') }}" class="btn btn-secondary">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Flag Sponsor Modal -->
+        {% if flagging_sponsor %}
+        <div class="modal show" id="flagSponsorModal" tabindex="-1" role="dialog" aria-labelledby="flagSponsorModalLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="flagSponsorModalLabel">Flag Sponsor</h5>
+                        <a href="{{ url_for('user_a_find') }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ url_for('flag_sponsor', sponsor_id=sponsor_id) }}" method="POST">
+                            <div class="form-group">
+                                <textarea name="reason" class="form-control" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-danger">Submit</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('user_a_find') }}" class="btn btn-secondary">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Flag Influencer Modal -->
+        {% if flagging_influencer %}
+        <div class="modal show" id="flagInfluencerModal" tabindex="-1" role="dialog" aria-labelledby="flagInfluencerModalLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="flagInfluencerModalLabel">Flag Influencer</h5>
+                        <a href="{{ url_for('user_a_find') }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ url_for('flag_influencer', influencer_id=influencer_id) }}" method="POST">
+                            <div class="form-group">
+                                <textarea name="reason" class="form-control" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-danger">Submit</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('user_a_find') }}" class="btn btn-secondary">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+                
+
+        
+
+
+        
+
+
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+</body>
+</html>
+
+

@@ -1,0 +1,553 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:500');
+
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;    
+}
+
+li,a,button{
+    font-family: "Montserrat",sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: #24252A;
+    text-decoration: none;
+}
+
+header{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 30px 10%;
+}
+
+.nav_links{
+    list-style: none;
+}
+
+.nav_links li{
+    display: inline-block;
+    padding: 0px 20px;
+}
+
+.nav_links li a {
+    transition: all 0.3s ease 0s;
+}
+
+.nav_links li a:hover{
+    color: #0088a9;
+    
+}
+
+button{
+    margin-left: 20px;
+    padding: 9px 25px;
+    background-color: rgba(0,136,169,0.7);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+}
+
+button:hover{
+    background-color: rgba(0,136,169,1);
+}
+
+/* Profile icon specific styles */
+.profile-icon {
+    margin-left: 20px;    /*Adjusted margin for spacing */
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: auto;     /*Pushes the profile icon to the left */
+}
+
+.profile-icon a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: #337AB7; /* Deep blue icon color */
+    border-radius: 50%; /* Ensures the anchor tag is circular */
+    background-color: #edf0f1; /* Fallback background color */
+    transition: background-color 0.3s, color 0.3s; /* Transition for background and color */
+}
+
+.profile-icon a:hover {
+    background-color: #87CEFA; /* Light blue background on hover */
+    color: #005580; /* Darker blue icon color on hover */
+}
+
+.profile-icon i {
+    font-size: 24px;
+}
+
+
+/* home icon specific styles */
+.home-icon {
+    margin-left: 20px; /* Adjusted margin for spacing */
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: auto; /* Pushes the profile icon to the left */
+}
+
+.home-icon a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: #337AB7; /* Deep blue icon color */
+    border-radius: 50%; /* Ensures the anchor tag is circular */
+    background-color: #edf0f1; /* Fallback background color */
+    transition: background-color 0.3s, color 0.3s; /* Transition for background and color */
+}
+
+.home-icon a:hover {
+    background-color: #87CEFA; /* Light blue background on hover */
+    color: #005580; /* Darker blue icon color on hover */
+}
+
+.home-icon i {
+    font-size: 24px;
+}
+
+
+
+/* ---------------------------------------------------------------- */
+
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.background-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #f0f0f0; /* Fallback color */
+    overflow: hidden;
+    z-index: -1;
+}
+
+/* Each circle animation */
+.circle-animation {
+    position: absolute;
+    width: 170px; /* Adjust size of the circle */
+    height: 170px; /* Adjust size of the circle */
+    border-radius: 50%; /* Ensures it's a circle */
+    background-color: transparent;
+    background-size: cover;
+    background-position: center;
+    animation: animateCircle linear infinite;
+}
+
+/* Positioning of circles and background images */
+.circle1 {
+    top: calc(50% - 200px); /* Adjust position */
+    left: calc(50% - 200px); /* Adjust position */
+    background-image: url('images/photo-1620403724159-40363e84a155.jpeg'); /* Replace with your image path */
+    animation-duration: 10s; /* Duration of one orbit */
+    animation-delay: 0s; /* Delay for animation start */
+}
+
+.circle2 {
+    top: calc(50% - 140px); /* Adjust position */
+    left: calc(50% - 140px); /* Adjust position */
+    background-image: url('images/photo-1620403724129-23fc81e1e0df.jpeg'); /* Replace with your image path */
+    animation-duration: 15s; /* Duration of one orbit */
+    animation-delay: 3s; /* Delay for animation start */
+}
+
+.circle3 {
+    top: calc(50% - 80px); /* Adjust position */
+    left: calc(50% - 80px); /* Adjust position */
+    background-image: url('images/premium_photo-1684433905257-bd5b0556f31e.jpeg'); /* Replace with your image path */
+    animation-duration: 20s; /* Duration of one orbit */
+    animation-delay: 6s; /* Delay for animation start */
+}
+
+.circle4 {
+    top: calc(50% - 20px); /* Adjust position */
+    left: calc(50% - 20px); /* Adjust position */
+    background-image: url('images/photo-1627244714766-94dab62ed964.jpeg'); /* Replace with your image path */
+    animation-duration: 25s; /* Duration of one orbit */
+    animation-delay: 9s; /* Delay for animation start */
+}
+
+/* Individual animations for each circle */
+@keyframes animateCircle {
+    0% {
+        transform: rotate(0deg) translateX(200px) rotate(0deg); /* Initial position */
+    }
+    100% {
+        transform: rotate(360deg) translateX(200px) rotate(-360deg); /* One full orbit */
+    }
+}
+
+
+
+main {
+    padding: 10px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.8); /* Transparent white background */
+    max-width: auto;
+    max-height: auto;
+    margin: 5px auto;
+    border-radius: 5px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+main h1 {
+    font-size: 2.5em;
+    color: #0088a9;
+    margin-top: 20px; /* Add some space below the header */
+}
+
+.content {
+    display: flex;
+    justify-content: flex-start; /* Align items to the start (left) */
+    margin-top: 20px; /* Space below the welcome title */
+    padding-left: 75px; /* Add padding from the left */
+}
+
+main h3 {
+    font-size: 1.5em;
+    color: black;
+    margin-bottom: 10px; /* Add some space below the Active campaign title */
+    text-align: left;
+    margin-left: 75px; /* Add margin from the left */
+}
+
+.campaign-box {
+    display: flex;
+    align-items: center;
+    max-width: 750px;
+    background-color: #ffffff; /* White background for the campaign box */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    margin-bottom: 20px; /* Space below each campaign box */
+    width: 100%;
+    margin-left: 75px; /* Add margin from the left */
+}
+
+.campaign-details {
+    flex-grow: 1; /* Grow to take remaining space */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.campaign-name {
+    font-size: 1.1em;
+    color: #333;
+    margin-bottom: 10px; /* Add some space below the campaign name */
+}
+
+.campaign-progress {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.progress-bar {
+    flex-grow: 1;
+    background-color: #f0f0f0; /* Light gray background for the progress bar */
+    border-radius: 10px;
+    margin-right: 10px; /* Space between progress bar and button */
+    overflow: hidden; /* Ensure the progress doesn't overflow */
+}
+
+.progress {
+    height: 10px;
+    background-color: #0088a9; /* Blue color for the progress */
+}
+
+.view-button {
+    padding: 10px 20px;
+    background-color: #0088a9;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.view-button:hover {
+    background-color: #005580; /* Darker blue on hover */
+}
+
+
+/* --------------------------------------------------------------------- */
+
+.add-campaign-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.add-campaign-button {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #0088a9;
+    color: white;
+    font-size: 30px;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+
+.add-campaign-button:hover {
+    background-color: #005580;
+}
+
+.hover-message {
+    display: none;
+    position: absolute;
+    top: 80px; /* Adjust position as needed */
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+    font-size: 14px;
+}
+
+.add-campaign-container:hover .hover-message {
+    display: block;
+}
+
+/* ---- */
+
+/* Bootstrap Modal Core Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1050;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    outline: 0;
+}
+
+.modal-dialog {
+    position: relative;
+    width: auto;
+    margin: 0.5rem;
+    pointer-events: none;
+}
+
+.modal.fade .modal-dialog {
+    transition: -webkit-transform 0.3s ease-out;
+    transition: transform 0.3s ease-out;
+    transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out;
+    -webkit-transform: translate(0, -25%);
+    transform: translate(0, -25%);
+}
+
+.modal.show .modal-dialog {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+}
+
+.modal-dialog-centered {
+    display: flex;
+    align-items: center;
+    min-height: calc(100% - 1rem);
+}
+
+.modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0.3rem;
+    outline: 0;
+}
+
+.modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 1rem 1rem;
+    border-bottom: 1px solid #dee2e6;
+    border-top-left-radius: 0.3rem;
+    border-top-right-radius: 0.3rem;
+}
+
+.modal-title {
+    margin-bottom: 0;
+    line-height: 1.5;
+}
+
+.modal-body {
+    position: relative;
+    flex: 1 1 auto;
+    padding: 1rem;
+}
+
+.modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0.75rem;
+    border-top: 1px solid #dee2e6;
+    border-bottom-right-radius: 0.3rem;
+    border-bottom-left-radius: 0.3rem;
+}
+
+.close {
+    float: right;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: 0.5;
+}
+
+.close:hover {
+    color: #000;
+    text-decoration: none;
+}
+
+.close:not(:disabled):not(.disabled) {
+    cursor: pointer;
+}
+
+button.close {
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+    /* -webkit-appearance: none; Apply here selectively */
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    height: calc(2.25rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    color: #212529;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.25rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+
+.btn-secondary {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+    color: #fff;
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+/* ---------------------------------------------- */
+
+
+.add-campaign-container {
+    position: relative;
+}
+
+.add-campaign-button {
+    font-size: 24px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.hover-message {
+    display: none;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    background-color: #333;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.add-campaign-container:hover .hover-message {
+    display: block;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+

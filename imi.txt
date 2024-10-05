@@ -1,0 +1,2429 @@
+(venv) (base) mdimrananwar@Mds-MacBook-Air MAD I PROJECT % flask db init
+
+IESCP application started...
+IESCP application started...
+  Creating directory '/Users/mdimrananwar/Desktop/MAD I PROJECT/migrations/versions' ...  done
+  Generating /Users/mdimrananwar/Desktop/MAD I PROJECT/migrations/script.py.mako ...  done
+  Generating /Users/mdimrananwar/Desktop/MAD I PROJECT/migrations/env.py ...  done
+  Generating /Users/mdimrananwar/Desktop/MAD I PROJECT/migrations/README ...  done
+  Generating /Users/mdimrananwar/Desktop/MAD I PROJECT/migrations/alembic.ini ...  done
+  Please edit configuration/connection/logging settings in
+  '/Users/mdimrananwar/Desktop/MAD I PROJECT/migrations/alembic.ini' before proceeding.
+(venv) (base) mdimrananwar@Mds-MacBook-Air MAD I PROJECT % flask db migrate -m "Initial migration."
+
+IESCP application started...
+IESCP application started...
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.autogenerate.compare] Detected added table 'user'
+INFO  [alembic.autogenerate.compare] Detected added table 'influencer'
+INFO  [alembic.autogenerate.compare] Detected added table 'message'
+INFO  [alembic.autogenerate.compare] Detected added table 'sponsor'
+INFO  [alembic.autogenerate.compare] Detected added table 'campaign'
+INFO  [alembic.autogenerate.compare] Detected added table 'active_campaign'
+INFO  [alembic.autogenerate.compare] Detected added table 'campaign_agreement'
+INFO  [alembic.autogenerate.compare] Detected added table 'campaign_progress'
+INFO  [alembic.autogenerate.compare] Detected added table 'campaign_request'
+  Generating /Users/mdimrananwar/Desktop/MAD I
+  PROJECT/migrations/versions/cebc9179bb94_initial_migration.py ...  done
+(venv) (base) mdimrananwar@Mds-MacBook-Air MAD I PROJECT % flask db upgrade
+
+IESCP application started...
+IESCP application started...
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> cebc9179bb94, Initial migration.
+(venv) (base) mdimrananwar@Mds-MacBook-Air MAD I PROJECT % 
+
+------------------------------------------------------------------------
+
+
+<!-- <div class="campaign-container">
+            {% for campaign in campaigns %}
+            <div class="campaign-box">
+                <div class="campaign-buttons">
+                    <a href="{{ url_for('find_campaigns', influencer_id=influencer.InfluencerID, campaign_id=campaign.CampaignID, action='view') }}" class="view-btn">View</a>
+                    <a href="{{ url_for('request_add', campaign_id=campaign.CampaignID, influencer_id=influencer_id) }}" class="request-btn">Request</a>
+                    <form action="{{ url_for('send_request', influencer_id=influencer.InfluencerID, campaign_id=campaign.CampaignID) }}" method="post">
+                        <button type="submit" class="request-btn">Request</button>
+                    </form>
+                    
+                    <a href="{{ url_for('message_campaign', campaign_id=campaign.CampaignID) }}" class="message-btn">
+                        <i class="fa fa-envelope"></i> Message
+                    </a>
+                </div>
+                <h3>{{ campaign.Title }}</h3>
+            </div>
+            {% endfor %}
+        </div> -->
+
+
+        <a href="{{ url_for('s_home', sponsor_id=sponsor.SponsorID, view_influencer=request.influencer.InfluencerID) }}">View</a>
+
+        <!-- <a href="{{ url_for('find_campaigns', influencer_id=influencer.InfluencerID, campaign_id=campaign.CampaignID, action='view') }}" class="view-btn">View</a> -->
+
+        <a href="{{ url_for('accept_request', request_id=request.RequestID) }}" class="request-btn">Accept</a>
+                    <a href="{{ url_for('reject_request', request_id=request.RequestID) }}" class="request-btn">Reject</a>
+
+                    <!-- <p>{{ campaign.Description[:100] }}...</p> -->
+
+
+    <!-- {% if influencer_details %}
+        <div id="influencerModal" class="modal show">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <a href="{{ url_for('s_home') }}" class="close">&times;</a>
+                    <div class="modal-body">
+                        <h2>{{ influencer_details.user.FullName }}</h2>
+                        <p><strong>Email:</strong> {{ influencer_details.user.Email }}</p>
+                        <p><strong>Phone:</strong> {{ influencer_details.user.PhoneNo }}</p>
+                        <p><strong>Content Niche:</strong> {{ influencer_details.ContentNiche }}</p>
+                        <p><strong>Platform Presence:</strong> {{ influencer_details.PlatformPresence }}</p>
+                        <p><strong>Account URLs:</strong> {{ influencer_details.AccountURLs }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %} -->
+
+
+    -----------------------------------------------------------
+
+    <div class="campaign-box" , id="activeCampaigns">
+            {% for active in active_campaigns %}
+            <div class="campaign-details">
+                <span class="campaign-name">{{ active.campaign.Title }}</span>
+                <div class="campaign-progress">
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 70%;">
+                            {{ active.Progress }}%
+                        </div>
+                    </div>
+                    <a href="{{ url_for('view_campaign', campaign_id=active.CampaignID) }}">View</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+
+-----------------------------------------------------------------
+
+<div class="campaign-container">
+            {% for active in active_campaigns %}
+            <div class="campaign-box">
+                <div class="campaign-details">
+                    <span class="campaign-name">{{ active.campaign.Title }} | {{ active.influencer.user.FullName }} | {{ active.Progress }}%</span>
+                    <div class="campaign-buttons">
+                        <a href="{{ url_for('user_s_home', sponsor_id=sponsor.SponsorID, campaign_id=active.campaign.CampaignID, influencer_id=active.influencer.InfluencerID, action='view') }}" class="view-btn">View</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+
+<a href="{{ url_for('send_message') }}" class="message-btn">
+                        <i class="fa fa-envelope"></i> Message
+                    </a>
+
+
+---------------------------------
+
+ <!-- Message Content Modal -->
+        {% if message_details and message_details.MessageID == message.MessageID %}
+        <div class="modal fade show" id="messageContentModal{{ message.MessageID }}" tabindex="-1" role="dialog" aria-labelledby="viewMessageContentLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewMessageContentLabel">Message</h5>
+                        <a href="{{ url_for('user_s_home', sponsor_id=sponsor.SponsorID) }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <p>{{ message.Content }}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('user_s_home', sponsor_id=sponsor.SponsorID) }}" class="btn btn-secondary">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+
+        <!-- Reply Message Modal -->
+        {% for message in messages %}
+        <div class="modal fade show" id="replyMessageModal{{ message.MessageID }}" tabindex="-1" role="dialog" aria-labelledby="replyMessageLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="replyMessageLabel">Reply to {{ message.sender.FullName }}</h5>
+                        <a href="{{ url_for('user_s_home', sponsor_id=sponsor.SponsorID) }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{  url_for('message_campaign', influencer_id=influencer.InfluencerID, campaign_id=campaign.CampaignID) }}" method="post">
+                            <input type="hidden" name="sender_id" value="{{ current_user.id }}">
+                            <input type="hidden" name="receiver_id" value="{{ message.SenderID }}">
+                            <textarea name="content" placeholder="Enter your reply..." required></textarea>
+                            <button type="submit" class="btn btn-primary">Send</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{  url_for('message_campaign', influencer_id=influencer.InfluencerID, campaign_id=campaign.CampaignID, sponsor_id=sponsor.SponsorID) }}" class="btn btn-secondary">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+
+-------------------
+
+ <!-- Message Content Modal -->
+        {% if action == 'view' and message_details %}
+        <div class="modal fade show" id="influencerModal" tabindex="-1" role="dialog" aria-labelledby="viewMessageContentLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewMessageContentLabel">Message</h5>
+                        <a href="{{ url_for('user_s_home', sponsor_id=sponsor.SponsorID) }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <p>{{ message_details.Content }}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('user_s_home', sponsor_id=sponsor.SponsorID) }}" class="btn btn-secondary">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+
+        -------------------
+
+        <!-- Influencer Profile Modal -->
+        {% if influencer_details %}
+        <div class="modal fade show" id="influencerProfileModal{{ influencer_details.InfluencerID }}" tabindex="-1" role="dialog" aria-labelledby="viewInfluencerModalLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewInfluencerModalLabel">Influencer Profile</h5>
+                        <a href="{{ url_for('user_s_home', sponsor_id=sponsor.SponsorID) }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <h2>{{ influencer_details.user.FullName }}</h2>
+                        <p><strong>Email:</strong> {{ influencer_details.user.Email }}</p>
+                        <p><strong>Phone:</strong> {{ influencer_details.user.PhoneNo }}</p>
+                        <p><strong>Content Niche:</strong> {{ influencer_details.ContentNiche }}</p>
+                        <p><strong>Platform Presence:</strong> {{ influencer_details.PlatformPresence }}</p>
+                        <p><strong>Account URLs:</strong> {{ influencer_details.AccountURLs }}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('user_s_home', sponsor_id=sponsor.SponsorID) }}" class="btn btn-secondary">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+------------------------
+
+<!-- Influencer Profile Modal -->
+        {% if influencer_details %}
+        <div class="modal fade show" id="influencerProfileModal{{ influencer_details.InfluencerID }}" tabindex="-1" role="dialog" aria-labelledby="viewInfluencerModalLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewInfluencerModalLabel">Influencer Profile</h5>
+                        <a href="{{ url_for('user_s_home', sponsor_id=sponsor.SponsorID) }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <h2>{{ influencer_details.user.FullName }}</h2>
+                        <p><strong>Email:</strong> {{ influencer_details.user.Email }}</p>
+                        <p><strong>Phone:</strong> {{ influencer_details.user.PhoneNo }}</p>
+                        <p><strong>Content Niche:</strong> {{ influencer_details.ContentNiche }}</p>
+                        <p><strong>Platform Presence:</strong> {{ influencer_details.PlatformPresence }}</p>
+                        <p><strong>Account URLs:</strong> {{ influencer_details.AccountURLs }}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('user_s_home', sponsor_id=sponsor.SponsorID) }}" class="btn btn-secondary">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+-----------------------------
+
+{% if action == 'view' and message_details %}
+        <div class="modal fade show" id="influencerModal" tabindex="-1" role="dialog" aria-labelledby="viewMessageContentLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewMessageContentLabel">Message</h5>
+                        <a href="{{ url_for('user_s_home', sponsor_id=sponsor.SponsorID) }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <p>{{ message_details.Content }}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('user_s_home', sponsor_id=sponsor.SponsorID) }}" class="btn btn-secondary">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+
+---------------------------------
+
+<h3>New Requests</h3>
+        <div class="campaign-container">
+            {% for request in new_requests %}
+            <div class="campaign-box">
+                
+                <div class="campaign-buttons">
+                    
+                    <a href="{{ url_for('user_s_home', sponsor_id=sponsor.SponsorID, request_id=request.RequestID, action='view') }}" class="view-btn">View</a>
+
+                    <form action="{{ url_for('accept_request', request_id=request.RequestID ) }}" method="post">
+                        <input type="hidden" name="sponsor_id" value="{{ sponsor.SponsorID }}">
+                        <button type="submit">Accept</button>
+                    </form>
+                    <form action="{{ url_for('reject_request', request_id=request.RequestID) }}" method="post">
+                        <input type="hidden" name="sponsor_id" value="{{ sponsor.SponsorID }}">
+                        <button type="submit">Reject</button>
+                    </form>
+                </div>
+                <h3>{{ request.campaign.Title }} | {{ request.influencer.user.FullName }}</h3>
+                
+            </div>
+            {% endfor %}
+        </div>
+
+
+<!-- Modal for Viewing Influencer -->
+        {% if influencer_details %}
+        <div class="modal fade show" id="influencerModal" tabindex="-1" role="dialog" aria-labelledby="viewInfluencerModalLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewInfluencerModalLabel">View Influencer</h5>
+                        <a href="{{ url_for('user_s_home', sponsor_id=sponsor.SponsorID) }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <h2>{{ influencer_details.user.FullName }}</h2>
+                            <p><strong>Email:</strong> {{ influencer_details.user.Email }}</p>
+                            <p><strong>Phone:</strong> {{ influencer_details.user.PhoneNo }}</p>
+                            <p><strong>Content Niche:</strong> {{ influencer_details.ContentNiche }}</p>
+                            <p><strong>Platform Presence:</strong> {{ influencer_details.PlatformPresence }}</p>
+                            <p><strong>Account URLs:</strong> {{ influencer_details.AccountURLs }}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('user_s_home', sponsor_id=sponsor.SponsorID) }}" class="btn btn-secondary">Close</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+
+
+----------------------------------------------
+
+<form action="{{ url_for('search_influencers') }}" method="get">
+                        <div class="form-group">
+                            <label for="influencerSearch">Search Influencers</label>
+                            <input type="text" class="form-control" id="influencerSearch" name="search_query" placeholder="Search by name or niche">
+                        </div>
+                        <div class="form-group">
+                            <label for="nicheFilter">Filter by Niche</label>
+                            <select class="form-control" id="nicheFilter" name="niche">
+                                <option value="" disabled selected>Select Niche</option>
+                                <option value="tech">Tech</option>
+                                <option value="fashion">Fashion</option>
+                                <option value="food">Food</option>
+                                <option value="travel">Travel</option>
+                                <!-- Add more niches as needed -->
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </form>
+
+------------------s_campaign.html ----------------------------------
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sponsor Campaign</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/s_home_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        .modal-dialog {
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
+        }
+        
+        .modal-body {
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+
+    
+        </style>
+        
+</head>
+<body>
+    <div class="background-animation">
+        <div class="circle-animation circle1"></div>
+        <div class="circle-animation circle2"></div>
+        <div class="circle-animation circle3"></div>
+        <div class="circle-animation circle4"></div>
+    </div>
+
+    <header>
+        <div class="profile-icon">
+            <a href="{{ url_for('sponsor_profile', sponsor_id=sponsor.SponsorID) }}">
+                <i class="fa-regular fa-user"></i>
+            </a>
+        </div>
+
+        <div class="home-icon">
+            <a href="{{ url_for('user_s_home', sponsor_id=sponsor_id) }}">
+                <i class="fa fa-house"></i>
+            </a>
+        </div>
+
+        <nav>
+            <ul class="nav_links">
+                <li><a href="{{ url_for('s_campaign', sponsor_id=sponsor_id) }}">Campaign</a></li>
+                <li><a href="#">Find</a></li>
+                <li><a href="#">Stats</a></li>
+            </ul>
+        </nav>
+        <a class="cta" href="{{url_for('logout')}}"><button>Logout</button></a>
+    </header>
+
+    <main>
+        <div class="add-campaign-container">
+            <button class="add-campaign-button" data-toggle="modal" data-target="#addCampaignModal">+</button>
+            <div class="hover-message">Add New Campaign</div>
+        </div>
+
+        <div class="campaigns-container">
+            {% for campaign in campaigns %}
+                <div class="campaign-box" style="display: flex; justify-content: space-between; align-items: center; padding: 15px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px; background-color: #fff;">
+                    <h3>{{ campaign.Title }}</h3>
+                    <div style="display: flex; gap: 10px;">
+                        <a href="{{ url_for('s_campaign', sponsor_id=sponsor_id, view_campaign_id=campaign.CampaignID) }}" class="btn btn-info">View</a>
+                        <a href="{{ url_for('s_campaign', sponsor_id=sponsor_id, edit_campaign_id=campaign.CampaignID) }}" class="btn btn-warning">Edit</a>
+                        <a href="#" class="btn btn-info">Find</a>
+                        <form action="{{ url_for('delete_campaign', campaign_id=campaign.CampaignID) }}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        
+    </main>
+
+    <!-- Modal for Adding Campaign -->
+    <div class="modal fade" id="addCampaignModal" tabindex="-1" role="dialog" aria-labelledby="addCampaignModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action="{{ url_for('add_campaign') }}" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addCampaignModalLabel">Add New Campaign</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="hidden" name="sponsor_id" value="{{ sponsor_id }}">
+                            <label for="campaignTitle">Title</label>
+                            <input type="text" class="form-control" id="campaignTitle" name="title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignDescription">Description</label>
+                            <textarea class="form-control" id="campaignDescription" name="description" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignImage">Image</label>
+                            <input type="text" class="form-control" id="campaignImage" name="image" placeholder="Enter URL of your image" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignNiche">Niche</label>
+                            <input type="text" class="form-control" id="campaignNiche" name="niche" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignStartDate">Start Date</label>
+                            <input type="date" class="form-control" id="campaignStartDate" name="start_date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignEndDate">End Date</label>
+                            <input type="date" class="form-control" id="campaignEndDate" name="end_date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignBudget">Budget</label>
+                            <input type="number" class="form-control" id="campaignBudget" name="budget" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignVisibility">Visibility</label>
+                            <select class="form-control" id="campaignVisibility" name="visibility" required>
+                                <option value="" disabled selected>Select visibility</option>
+                                <option value="public">Public</option>
+                                <option value="private">Private</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- Modal for Viewing Campaign -->
+    {% if view_campaign %}
+    <div class="modal fade show" id="viewCampaignModal" tabindex="-1" role="dialog" aria-labelledby="viewCampaignModalLabel" aria-modal="true" style="display: block;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewCampaignModalLabel">View Campaign</h5>
+                    <a href="{{ url_for('s_campaign', sponsor_id=sponsor_id) }}" class="close" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </a>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Title:</strong> {{ view_campaign.Title }}</p>
+                    <p><strong>Description:</strong> {{ view_campaign.Description }}</p>
+                    <p><strong>Niche:</strong> {{ view_campaign.Niche }}</p>
+                    <p><strong>Start Date:</strong> {{ view_campaign.StartDate.strftime('%Y-%m-%d') }}</p>
+                    <p><strong>End Date:</strong> {{ view_campaign.EndDate.strftime('%Y-%m-%d') }}</p>
+                    <p><strong>Budget:</strong> {{ view_campaign.Budget }}</p>
+                    <p><strong>Visibility:</strong> {{ view_campaign.Visibility }}</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="{{ url_for('s_campaign', sponsor_id=sponsor_id) }}" class="btn btn-secondary">Close</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    
+
+
+    <!-- Modal for Editing Campaign -->
+    {% if edit_campaign %}
+    <div class="modal fade show" id="editCampaignModal" tabindex="-1" role="dialog" aria-labelledby="editCampaignModalLabel" aria-modal="true" style="display: block;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action="{{ url_for('edit_campaign', campaign_id=edit_campaign.CampaignID) }}" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editCampaignModalLabel">Edit Campaign</h5>
+                        <a href="{{ url_for('s_campaign', sponsor_id=sponsor_id) }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Edit Campaign Form Fields with pre-filled values -->
+                        {% if edit_campaign %}
+                            <div class="form-group">
+                                <label for="editCampaignTitle">Title</label>
+                                <input type="text" class="form-control" id="editCampaignTitle" name="title" value="{{ edit_campaign.Title }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editCampaignDescription">Description</label>
+                                <textarea class="form-control" id="editCampaignDescription" name="description" rows="3" required>{{ edit_campaign.Description }}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="editCampaignNiche">Niche</label>
+                                <input type="text" class="form-control" id="editCampaignNiche" name="niche" value="{{ edit_campaign.Niche }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editCampaignStartDate">Start Date</label>
+                                <input type="date" class="form-control" id="editCampaignStartDate" name="start_date" value="{{ edit_campaign.StartDate.strftime('%Y-%m-%d') }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editCampaignEndDate">End Date</label>
+                                <input type="date" class="form-control" id="editCampaignEndDate" name="end_date" value="{{ edit_campaign.EndDate.strftime('%Y-%m-%d') }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editCampaignBudget">Budget</label>
+                                <input type="number" class="form-control" id="editCampaignBudget" name="budget" value="{{ edit_campaign.Budget }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editCampaignVisibility">Visibility</label>
+                                <select class="form-control" id="editCampaignVisibility" name="visibility" required>
+                                    <option value="public" {% if edit_campaign.Visibility == 'public' %}selected{% endif %}>Public</option>
+                                    <option value="private" {% if edit_campaign.Visibility == 'private' %}selected{% endif %}>Private</option>
+                                </select>
+                            </div>
+                        {% else %}
+                            <p>No campaign selected.</p>
+                        {% endif %}
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('s_campaign', sponsor_id=sponsor_id) }}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Modal for Finding Influencers -->
+    <div class="modal fade" id="findInfluencerModal" tabindex="-1" role="dialog" aria-labelledby="findInfluencerModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="findInfluencerModalLabel">Find Influencer</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h1>Find Influencers</h1>
+                    <div class="search-filter-container">
+                        <form class="search-bar" action="{{ url_for('search_influencers', sponsor_id=sponsor.SponsorID, campaign_id=view_campaign.CampaignID) }}" method="GET">
+                            <input type="text" name="search" placeholder="Search by influencer name" value="{{ request.args.get('search', '') }}">
+                            <button type="submit">Search</button>
+                        </form>
+                        <form class="filter-dropdown" action="{{ url_for('search_influencers', sponsor_id=sponsor.SponsorID, campaign_id=view_campaign.CampaignID) }}" method="GET">
+                            <select name="filter" onchange="this.form.submit()">
+                                <option value="">Filter by niche</option>
+                                {% for niche in niches %}
+                                    <option value="{{ niche }}" {% if request.args.get('filter') == niche %}selected{% endif %}>{{ niche }}</option>
+                                {% endfor %}
+                            </select>
+                        </form>
+                    </div>
+                    <div class="influencer-list mt-4">
+                        {% if influencers %}
+                            <ul class="list-group">
+                                {% for influencer in influencers %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        {{ influencer.FullName }} - {{ influencer.Niche }}
+                                        <div>
+                                            <a href="{{ url_for('view_influencer', influencer_id=influencer.InfluencerID) }}" class="btn btn-info">View</a>
+                                            <form action="{{ url_for('request_influencer', campaign_id=view_campaign.CampaignID, influencer_id=influencer.InfluencerID) }}" method="post" style="display:inline;">
+                                                <button type="submit" class="btn btn-primary">Request</button>
+                                            </form>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>No influencers found. Please refine your search.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+</body>
+</html>
+
+----------------------------------------------
+
+<div class="search-filter-container">
+                        <form class="search-bar" action="{{ url_for('search_influencers', sponsor_id=sponsor_id, campaign_id=find_campaign.CampaignID) }}" method="GET">
+                            <input type="text" name="search" placeholder="Search by influencer name" value="{{ request.args.get('search', '') }}">
+                            <button type="submit">Search</button>
+                        </form>
+                        <form class="filter-dropdown" action="{{ url_for('search_influencers', sponsor_id=sponsor_id, campaign_id=find_campaign.CampaignID) }}" method="GET">
+                            <select name="filter" onchange="this.form.submit()">
+                                <option value="">Filter by niche</option>
+                                {% for niche in niches %}
+                                    <option value="{{ niche }}" {% if request.args.get('filter') == niche %}selected{% endif %}>{{ niche }}</option>
+                                {% endfor %}
+                            </select>
+                        </form>
+                    </div>
+
+
+------------------------------------------------------
+
+<!-- Modal for Finding Influencers -->
+    {% if find_campaign %}
+    <div class="modal fade show" id="findInfluencerModal" tabindex="-1" role="dialog" aria-labelledby="findInfluencerModalLabel" aria-modal="true" style="display: block;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="findInfluencerModalLabel">Find Influencer</h5>
+                    <a href="{{ url_for('s_campaign', sponsor_id=sponsor_id) }}" class="close" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </a>
+                </div>
+                <div class="modal-body">
+                    <h1 class="modal-title-centered">Find Influencers</h1>
+                    <div class="search-filter-container d-flex justify-content-between">
+                        <form class="search-bar" action="{{ url_for('search_influencers', sponsor_id=sponsor_id, campaign_id=find_campaign.CampaignID) }}" method="GET">
+                            <input type="text" name="search" placeholder="Search by influencer name" value="{{ request.args.get('search', search_query) }}">
+                            <button type="submit">Search</button>
+                        </form>
+                        <form class="filter-dropdown" action="{{ url_for('search_influencers', sponsor_id=sponsor_id, campaign_id=find_campaign.CampaignID) }}" method="GET">
+                            <input type="hidden" name="search" value="{{ request.args.get('search', search_query) }}">
+                            <select name="filter" onchange="this.form.submit()">
+                                <option value="">Filter by niche</option>
+                                {% for niche in niches %}
+                                    <option value="{{ niche }}" {% if request.args.get('filter', filter_niche) == niche %}selected{% endif %}>{{ niche }}</option>
+                                {% endfor %}
+                            </select>
+                        </form>
+                    </div>
+
+                    <div class="campaign-container">
+                        {% for influencer in influencers %}
+                        {% set request_exists = False %}
+                        {% for request in campaign_requests %}
+                            {% if request.InfluencerID == influencer.InfluencerID %}
+                                {% set request_exists = request %}
+                            {% endif %}
+                        {% endfor %}
+                        <div class="campaign-box">
+                            <div class="campaign-buttons">
+                                <a href="{{ url_for('s_campaign', sponsor_id=sponsor_id, find_campaign_id=find_campaign.CampaignID, action='view') }}" class="view-btn">View</a>
+                        
+                                {% if request_exists %}
+                                <form action="{{ url_for('cancel_influencer_request', request_id=request_exists.RequestID) }}" method="post">
+                                    <button type="submit" class="unrequest-btn">Unrequest</button>
+                                </form>
+                                {% else %}
+                                <form action="{{ url_for('request_influencer', influencer_id=influencer.InfluencerID, campaign_id=find_campaign.CampaignID) }}" method="post">
+                                    <button type="submit" class="request-btn">Request</button>
+                                </form>
+                                {% endif %}
+    
+                                <form action="{{ url_for('s_campaign', sponsor_id=sponsor_id, find_campaign_id=find_campaign.CampaignID, show_message_modal=true) }}" method="GET">
+                                    <input type="hidden" name="receiver_id" value="{{ influencer.InfluencerID }}">
+                                    <button type="submit" class="message-btn">
+                                        <i class="fa fa-envelope"></i> Message
+                                    </button>
+                                </form>
+                            </div>
+
+                            <h3>{{ influencer.user.FullName }}</h3>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    {% if show_message_modal %}
+                    <div class="modal fade show" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-modal="true" style="display: block;">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="messageModalLabel">Send Message</h5>
+                                    <a href="{{ url_for('s_campaign', sponsor_id=sponsor_id, find_campaign_id=find_campaign.CampaignID) }}" class="close" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </a>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{{ url_for('message_influencer') }}" method="post">
+                                        <input type="hidden" name="sender_id" value="{{ sponsor.UserID }}">
+                                        <input type="hidden" name="receiver_id" value="{{ request.args.get('receiver_id') }}">
+                                        <input type="hidden" name="campaign_id" value="{{ find_campaign.CampaignID }}">
+                                        <textarea name="content" placeholder="Enter your message..." required></textarea>
+                                        <button type="submit" class="btn btn-primary">Send</button>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="{{ url_for('s_campaign', sponsor_id=sponsor_id, find_campaign_id=find_campaign.CampaignID) }}" class="btn btn-secondary">Close</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+------------------------s_campaign--------------------------------------
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sponsor Campaign</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/s_home_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        .modal-dialog {
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
+        }
+        
+        .modal-body {
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+
+        /* Modal styling */
+        .modal-dialog {     
+            max-width: 80%; /* Adjust the width as needed */
+            margin: 1.75rem auto; /* Center the modal vertically and horizontally */
+        }
+
+        .modal-content {        
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .modal-header {     
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {       
+            padding: 20px;
+        }
+
+        .modal-title-centered {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+
+        /* Search and filter layout */
+        .search-filter-container {      
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .search-bar {       
+            display: flex;
+            flex: 1;
+        }
+
+        .search-bar input[type="text"] {        
+            width: 30%;
+            padding: 4px;
+            margin-right: 5px;
+        }
+
+        .search-bar button {        
+            padding: 8px 16px;
+        }
+
+        .filter-dropdown {      
+            width: 30%;
+            
+        }
+
+        .filter-dropdown select {       
+            width: 40%;
+            padding: 3px;
+        }
+
+        /* Campaign box styling */
+        .campaign-container {       
+            display: flex;
+            flex-direction: column;
+        }
+
+        .campaign-box {     
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .campaign-buttons {     
+            display: flex;
+            gap: 10px;
+        }
+
+        .view-btn, .request-btn, .unrequest-btn, .message-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .view-btn { background-color: #007bff; color: #fff; }
+        .request-btn { background-color: #28a745; color: #fff; }
+        .unrequest-btn { background-color: #dc3545; color: #fff; }
+        .message-btn { background-color: #17a2b8; color: #fff; }
+
+
+
+
+    </style>
+</head>
+<body>
+    <div class="background-animation">
+        <div class="circle-animation circle1"></div>
+        <div class="circle-animation circle2"></div>
+        <div class="circle-animation circle3"></div>
+        <div class="circle-animation circle4"></div>
+    </div>
+
+    <header>
+        <div class="profile-icon">
+            <a href="{{ url_for('sponsor_profile', sponsor_id=sponsor.SponsorID) }}">
+                <i class="fa-regular fa-user"></i>
+            </a>
+        </div>
+
+        <div class="home-icon">
+            <a href="{{ url_for('user_s_home', sponsor_id=sponsor_id) }}">
+                <i class="fa fa-house"></i>
+            </a>
+        </div>
+
+        <nav>
+            <ul class="nav_links">
+                <li><a href="{{ url_for('s_campaign', sponsor_id=sponsor_id) }}">Campaign</a></li>
+                <li><a href="#">Find</a></li>
+                <li><a href="#">Stats</a></li>
+            </ul>
+        </nav>
+        <a class="cta" href="{{url_for('logout')}}"><button>Logout</button></a>
+    </header>
+
+    <main>
+        <div class="add-campaign-container">
+            <button class="add-campaign-button" data-toggle="modal" data-target="#addCampaignModal">+</button>
+            <div class="hover-message">Add New Campaign</div>
+        </div>
+
+        <div class="campaigns-container">
+            {% for campaign in campaigns %}
+                <div class="campaign-box" style="display: flex; justify-content: space-between; align-items: center; padding: 15px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px; background-color: #fff;">
+                    <h3>{{ campaign.Title }}</h3>
+                    <div style="display: flex; gap: 10px;">
+                        <a href="{{ url_for('s_campaign', sponsor_id=sponsor_id, view_campaign_id=campaign.CampaignID) }}" class="btn btn-info">View</a>
+                        <a href="{{ url_for('s_campaign', sponsor_id=sponsor_id, edit_campaign_id=campaign.CampaignID) }}" class="btn btn-warning">Edit</a>
+                        <a href="{{ url_for('s_campaign', sponsor_id=sponsor_id, find_campaign_id=campaign.CampaignID) }}" class="btn btn-info">Find</a>
+                        <form action="{{ url_for('delete_campaign', campaign_id=campaign.CampaignID) }}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </main>
+
+    <!-- Modal for Adding Campaign -->
+    <div class="modal fade" id="addCampaignModal" tabindex="-1" role="dialog" aria-labelledby="addCampaignModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action="{{ url_for('add_campaign') }}" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addCampaignModalLabel">Add New Campaign</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="hidden" name="sponsor_id" value="{{ sponsor_id }}">
+                            <label for="campaignTitle">Title</label>
+                            <input type="text" class="form-control" id="campaignTitle" name="title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignDescription">Description</label>
+                            <textarea class="form-control" id="campaignDescription" name="description" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignImage">Image</label>
+                            <input type="text" class="form-control" id="campaignImage" name="image" placeholder="Enter URL of your image" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignNiche">Niche</label>
+                            <input type="text" class="form-control" id="campaignNiche" name="niche" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignStartDate">Start Date</label>
+                            <input type="date" class="form-control" id="campaignStartDate" name="start_date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignEndDate">End Date</label>
+                            <input type="date" class="form-control" id="campaignEndDate" name="end_date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignBudget">Budget</label>
+                            <input type="number" class="form-control" id="campaignBudget" name="budget" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignVisibility">Visibility</label>
+                            <select class="form-control" id="campaignVisibility" name="visibility" required>
+                                <option value="" disabled selected>Select visibility</option>
+                                <option value="public">Public</option>
+                                <option value="private">Private</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Viewing Campaign -->
+    {% if view_campaign %}
+    <div class="modal fade show" id="viewCampaignModal" tabindex="-1" role="dialog" aria-labelledby="viewCampaignModalLabel" aria-modal="true" style="display: block;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewCampaignModalLabel">View Campaign</h5>
+                    <a href="{{ url_for('s_campaign', sponsor_id=sponsor_id) }}" class="close" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </a>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Title:</strong> {{ view_campaign.Title }}</p>
+                    <p><strong>Description:</strong> {{ view_campaign.Description }}</p>
+                    <p><strong>Niche:</strong> {{ view_campaign.Niche }}</p>
+                    <p><strong>Start Date:</strong> {{ view_campaign.StartDate.strftime('%Y-%m-%d') }}</p>
+                    <p><strong>End Date:</strong> {{ view_campaign.EndDate.strftime('%Y-%m-%d') }}</p>
+                    <p><strong>Budget:</strong> {{ view_campaign.Budget }}</p>
+                    <p><strong>Visibility:</strong> {{ view_campaign.Visibility }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Modal for Editing Campaign -->
+    {% if edit_campaign %}
+    <div class="modal fade show" id="editCampaignModal" tabindex="-1" role="dialog" aria-labelledby="editCampaignModalLabel" aria-modal="true" style="display: block;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action="{{ url_for('edit_campaign', campaign_id=edit_campaign.CampaignID) }}" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editCampaignModalLabel">Edit Campaign</h5>
+                        <a href="{{ url_for('s_campaign', sponsor_id=sponsor_id) }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="campaignTitle">Title</label>
+                            <input type="text" class="form-control" id="campaignTitle" name="title" value="{{ edit_campaign.Title }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignDescription">Description</label>
+                            <textarea class="form-control" id="campaignDescription" name="description" rows="3" required>{{ edit_campaign.Description }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignImage">Image</label>
+                            <input type="text" class="form-control" id="campaignImage" name="image" value="{{ edit_campaign.Image }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignNiche">Niche</label>
+                            <input type="text" class="form-control" id="campaignNiche" name="niche" value="{{ edit_campaign.Niche }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignStartDate">Start Date</label>
+                            <input type="date" class="form-control" id="campaignStartDate" name="start_date" value="{{ edit_campaign.StartDate.strftime('%Y-%m-%d') }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignEndDate">End Date</label>
+                            <input type="date" class="form-control" id="campaignEndDate" name="end_date" value="{{ edit_campaign.EndDate.strftime('%Y-%m-%d') }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignBudget">Budget</label>
+                            <input type="number" class="form-control" id="campaignBudget" name="budget" value="{{ edit_campaign.Budget }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignVisibility">Visibility</label>
+                            <select class="form-control" id="campaignVisibility" name="visibility" required>
+                                <option value="public" {% if edit_campaign.Visibility == 'public' %}selected{% endif %}>Public</option>
+                                <option value="private" {% if edit_campaign.Visibility == 'private' %}selected{% endif %}>Private</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('s_campaign', sponsor_id=sponsor_id) }}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    
+    <!-- Modal for Finding Influencers -->
+    {% if find_campaign %}
+    <div class="modal fade show" id="findInfluencerModal" tabindex="-1" role="dialog" aria-labelledby="findInfluencerModalLabel" aria-modal="true" style="display: block;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="findInfluencerModalLabel">Find Influencer</h5>
+                    <a href="{{ url_for('s_campaign', sponsor_id=sponsor_id) }}" class="close" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </a>
+                </div>
+                <div class="modal-body">
+                    <h1 class="modal-title-centered">Find Influencers</h1>
+                    <div class="search-filter-container d-flex justify-content-between">
+                        <form class="search-bar" action="{{ url_for('search_influencers', sponsor_id=sponsor_id, campaign_id=find_campaign.CampaignID) }}" method="GET">
+                            <input type="text" name="search" placeholder="Search by influencer name" value="{{ request.args.get('search', search_query) }}">
+                            <button type="submit">Search</button>
+                        </form>
+                        <form class="filter-dropdown" action="{{ url_for('search_influencers', sponsor_id=sponsor_id, campaign_id=find_campaign.CampaignID) }}" method="GET">
+                            <input type="hidden" name="search" value="{{ request.args.get('search', search_query) }}">
+                            <select name="filter" onchange="this.form.submit()">
+                                <option value="">Filter by niche</option>
+                                {% for niche in niches %}
+                                    <option value="{{ niche }}" {% if request.args.get('filter', filter_niche) == niche %}selected{% endif %}>{{ niche }}</option>
+                                {% endfor %}
+                            </select>
+                        </form>
+                    </div>
+
+                    <div class="campaign-container">
+                        {% for influencer in influencers %}
+                        {% set request_exists = False %}
+                        {% for request in campaign_requests %}
+                            {% if request.InfluencerID == influencer.InfluencerID %}
+                                {% set request_exists = request %}
+                            {% endif %}
+                        {% endfor %}
+                        <div class="campaign-box">
+                            <div class="campaign-buttons">
+                                <a href="{{ url_for('s_campaign', sponsor_id=sponsor_id, find_campaign_id=find_campaign.CampaignID, action='view') }}" class="view-btn">View</a>
+                        
+                                {% if request_exists %}
+                                <form action="{{ url_for('cancel_influencer_request', request_id=request_exists.RequestID) }}" method="post">
+                                    <button type="submit" class="unrequest-btn">Unrequest</button>
+                                </form>
+                                {% else %}
+                                <form action="{{ url_for('request_influencer', influencer_id=influencer.InfluencerID, campaign_id=find_campaign.CampaignID) }}" method="post">
+                                    <button type="submit" class="request-btn">Request</button>
+                                </form>
+                                {% endif %}
+    
+                                <form action="{{ url_for('s_campaign', sponsor_id=sponsor_id, find_campaign_id=find_campaign.CampaignID, show_message_modal=true) }}" method="GET">
+                                    <input type="hidden" name="receiver_id" value="{{ influencer.InfluencerID }}">
+                                    <button type="submit" class="message-btn">
+                                        <i class="fa fa-envelope"></i> Message
+                                    </button>
+                                </form>
+                            </div>
+
+                            <h3>{{ influencer.user.FullName }}</h3>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    {% if show_message_modal %}
+                    <div class="modal fade show" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-modal="true" style="display: block;">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="messageModalLabel">Send Message</h5>
+                                    <a href="{{ url_for('s_campaign', sponsor_id=sponsor_id, find_campaign_id=find_campaign.CampaignID) }}" class="close" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </a>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{{ url_for('message_influencer') }}" method="post">
+                                        <input type="hidden" name="sender_id" value="{{ sponsor.UserID }}">
+                                        <input type="hidden" name="receiver_id" value="{{ request.args.get('receiver_id') }}">
+                                        <input type="hidden" name="campaign_id" value="{{ find_campaign.CampaignID }}">
+                                        <textarea name="content" placeholder="Enter your message..." required></textarea>
+                                        <button type="submit" class="btn btn-primary">Send</button>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="{{ url_for('s_campaign', sponsor_id=sponsor_id, find_campaign_id=find_campaign.CampaignID) }}" class="btn btn-secondary">Close</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+
+
+    
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+
+--------------------------------------------------
+<input type="hidden" name="search" value="{{ request.args.get('search', search_query) }}">
+
+{% set request_exists = requests.get(influencer.InfluencerID) %}
+
+<h1>Previous Campaigns</h1>
+        <div class="search-filter-container">
+            <form class="search-bar" action="{{ url_for('prev_campaigns' , influencer_id=influencer.InfluencerID) }}" method="GET">
+                <input type="text" name="search" placeholder="Search by campaign title" value="{{ request.args.get('search', '') }}">
+                <button type="submit">Search</button>
+            </form>
+            <form class="filter-dropdown" action="{{ url_for('prev_campaigns', influencer_id=influencer.InfluencerID) }}" method="GET">
+                <select name="filter" onchange="this.form.submit()">
+                    <!-- Default option to show all campaigns -->
+                    <option value="" {% if request.args.get('filter') == '' %}selected{% endif %}>Filter by end dates</option>
+                    <!-- Loop to generate distinct end date options -->
+
+                    {% for distinct_end_date in distinct_end_dates %}
+                        
+                        <option value="{{ distinct_end_date }}" {% if request.args.get('filter') == distinct_end_date %}selected{% endif %}>
+                            {{ distinct_end_date }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </form>
+            
+            
+        </div>
+
+        # Query for distinct end dates
+    distinct_end_dates = db.session.query(Campaign.EndDate)\
+                                   .join(ActiveCampaign, ActiveCampaign.CampaignID == Campaign.CampaignID)\
+                                   .filter(ActiveCampaign.InfluencerID == influencer_id)\
+                                   .filter(Campaign.EndDate < date.today())\
+                                   .distinct().all()
+    distinct_end_dates = [date[0] for date in distinct_end_dates]  # Extract dates from tuples
+
+
+
+----------------------------------------a_find.html-------------------------------------------------
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Find Page </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/s_home_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+
+        /* Search and Filter */
+        .search-filter-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .search-bar {
+            display: flex;
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .search-bar input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-right: 5px;
+            max-width: 200px;
+        }
+
+        .search-bar button {
+            padding: 10px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+
+        .modal-dialog {
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
+        }
+        
+        .modal-body {
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+
+        /* Campaign Boxes */
+        .campaign-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .campaign-box {
+            display: flex;
+            align-items: center;
+            max-width: 750px;
+            background-color: #ffffff; /* White background for the campaign box */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            margin-bottom: 20px; /* Space below each campaign box */
+            width: 100%;
+            margin-left: 75px; /* Add margin from the left */
+        }
+
+        .campaign-details {
+            flex-grow: 1; /* Grow to take remaining space */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .campaign-name {
+            font-size: 1.1em;
+            color: #333;
+            margin-bottom: 10px; /* Add some space below the campaign name */
+        }
+
+        .campaign-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .view-btn {
+            padding: 10px 20px;
+            background-color: #0088a9;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .view-btn:hover {
+            background-color: #005580; /* Darker blue on hover */
+        }
+
+        .request-btn {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .request-btn:hover {
+            background-color: #1c7430; /* Darker green on hover */
+        }
+
+
+        
+
+    
+        </style>
+</head>
+<body>
+
+    <div class="background-animation">
+        <!-- Circular animations -->
+        <div class="circle-animation circle1"></div>
+        <div class="circle-animation circle2"></div>
+        <div class="circle-animation circle3"></div>
+        <div class="circle-animation circle4"></div>
+    </div>
+
+
+    <header>
+        
+
+        <div class="home-icon">
+            <a href="{{ url_for('user_a_home') }}">
+                <i class="fa fa-house"></i>
+            </a>
+        </div>
+
+
+        <nav>
+            <ul class="nav_links">
+                <li><a href="{{ url_for('user_a_find') }}">Find</a></li>
+                <li><a href="#">Stats</a></li>
+            </ul>
+        </nav>
+        <a class="cta" href="{{url_for('logout')}}"><button>Logout</button></a>
+    </header>
+
+    <main>
+
+        <div class="search-filter-container">
+            <form class="search-bar" action="{{ url_for('user_a_find') }}" method="GET">
+                <input type="text" name="search" placeholder="Search" value="{{ request.args.get('search', '') }}">
+                <button type="submit">Search</button>
+            </form>
+            
+        </div>
+
+        <h3>Campaigns</h3>
+        <div class="campaign-container">
+            {% for campaign in campaigns %}
+            <div class="campaign-box">
+                <div class="campaign-buttons">
+                    <a href="{{ url_for('user_a_find', sponsor_id=campaign.SponsorID, campaign_id=campaign.CampaignID, action='view') }}" class="view-btn">View</a>
+                    
+
+                    <form action="{{ url_for('flag_campaign', campaign_id = campaign.CampaignID) }}" method="POST" >
+                        <input type="hidden" name="flag_campaign" value="{{ campaign.CampaignID }}">
+                        <div class="form-group">
+                            <label for="reason">Reason for Flagging:</label>
+                            <textarea name="reason" class="form-control" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-danger">Submit</button>
+                    </form>
+                    
+                    
+                </div>
+
+                <h3>{{ campaign.Title }} | {{ campaign.sponsor.user.FullName }}</h3>
+            </div>
+            {% endfor %}
+        </div>
+
+
+        <h3>Sponsors</h3>
+        <div class="campaign-container">
+            {% for sponsor in sponsors %}
+            <div class="campaign-box">
+                <div class="campaign-buttons">
+                    <a href="{{ url_for('user_a_find', sponsor_id=sponsor.SponsorID,  action='view') }}" class="view-btn">View</a>
+                    
+
+                    <form action="{{ url_for('flag_sponsor' , sponsor_id = sponsor.SponsorID) }}" method="POST" >
+                        <input type="hidden" name="flag_sponsor" value="{{ sponsor.SponsorID }}">
+                        <div class="form-group">
+                            <label for="reason">Reason for Flagging:</label>
+                            <textarea name="reason" class="form-control" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-danger">Submit</button>
+                    </form>
+                    
+                    
+                </div>
+
+                <h3> {{ sponsor.user.FullName }}</h3>
+            </div>
+            {% endfor %}
+        </div>
+
+        <h3>Influencers</h3>
+        <div class="campaign-container">
+            {% for influencer in influencers %}
+            <div class="campaign-box">
+                <div class="campaign-buttons">
+                    <a href="{{ url_for('user_a_find', influencer_id=influencer.InfluencerID,  action='view') }}" class="view-btn">View</a>
+                    
+
+                    <form  action="{{ url_for('flag_influencer' , influencer_id = influencer.InfluencerID) }}" method="POST">
+                        <input type="hidden" name="flag_influencer" value="{{ influencer.InfluencerID }}">
+                        <div class="form-group">
+                            <label for="reason">Reason for Flagging:</label>
+                            <textarea name="reason" class="form-control" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-danger">Submit</button>
+                    </form>
+                    
+                    
+                </div>
+
+                <h3> {{ influencer.user.FullName }}</h3>
+            </div>
+            {% endfor %}
+        </div>
+
+        
+
+
+
+        <!-- Modal for Viewing Campaign Details -->
+        {% if campaign_details %}
+        <div class="modal show" id="influencerModal" tabindex="-1" role="dialog" aria-labelledby="viewCampaignModalLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewCampaignModalLabel">Campaign Details</h5>
+                        <a href="{{ url_for('user_a_find') }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <h2>{{ campaign_details.Title }}</h2>
+                        <p><strong>Description:</strong> {{ campaign_details.Description }}</p>
+                        <p><strong>Start Date:</strong> {{ campaign_details.StartDate }}</p>
+                        <p><strong>End Date:</strong> {{ campaign_details.EndDate }}</p>
+                        <p><strong>Budget:</strong> {{ campaign_details.Budget }}</p>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('user_a_find') }}" class="btn btn-secondary">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+
+        <!-- Modal for Viewing Sponsor Details -->
+        {% if sponsor_details %}
+        <div class="modal show" id="influencerModal" tabindex="-1" role="dialog" aria-labelledby="viewSponsorModalLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewSponsorModalLabel">Sponsor Details</h5>
+                        <a href="{{ url_for('user_a_find') }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <h2>{{ sponsor_details.user.FullName }}</h2>
+                        <p><strong>Email:</strong> {{ sponsor_details.user.Email }}</p>
+                        <p><strong>PhoneNo:</strong> {{ sponsor_details.user.PhoneNo }}</p>
+                        <p><strong>Gender:</strong> {{ sponsor_details.user.Gender }}</p>
+                        <p><strong>Nationality:</strong> {{ sponsor_details.user.Nationality }}</p>
+                        <p><strong>CompanyName:</strong> {{ sponsor_details.CompanyName }}</p>
+                        <p><strong>CompanyWebsite:</strong> {{ sponsor_details.CompanyWebsite }}</p>
+                        <p><strong>IndustryCategory:</strong> {{ sponsor_details.IndustryCategory }}</p>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('user_a_find') }}" class="btn btn-secondary">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+
+        <!-- Modal for Viewing Influencer Details -->
+        {% if influencer_details %}
+        <div class="modal show" id="influencerModal" tabindex="-1" role="dialog" aria-labelledby="viewInfluencerModalLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewInfluencerModalLabel">Influencer Details</h5>
+                        <a href="{{ url_for('user_a_find') }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <h2>{{ influencer_details.user.FullName }}</h2>
+                        <p><strong>Email:</strong> {{ influencer_details.user.Email }}</p>
+                        <p><strong>PhoneNo:</strong> {{ influencer_details.user.PhoneNo }}</p>
+                        <p><strong>Gender:</strong> {{ influencer_details.user.Gender }}</p>
+                        <p><strong>Nationality:</strong> {{ influencer_details.user.Nationality }}</p>
+                        <p><strong>AccountURLs:</strong> {{ influencer_details.AccountURLs }}</p>
+                        <p><strong>ContentNiche:</strong> {{ influencer_details.ContentNiche }}</p>
+                        
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('user_a_find') }}" class="btn btn-secondary">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+
+        <!-- Flag Campaign Modal -->
+        {% if request.method == 'POST' and 'flag_campaign' in request.form %}
+        <div class="modal show" id="flagModal" tabindex="-1" role="dialog" aria-labelledby="flagCampaignModalLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="flagCampaignModalLabel">Flag Campaign</h5>
+                        <a href="{{ url_for('user_a_find') }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <p>Please provide a reason for flagging this campaign:</p>
+                        <form action="{{ url_for('flag_campaign', campaign_id = campaign.CampaignID) }}" method="POST" >
+                            <div class="form-group">
+                                <textarea name="reason" class="form-control" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-danger">Submit</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('user_a_find') }}" class="btn btn-secondary">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+
+
+        <!-- Flag Sponsor Modal -->
+        {% if request.method == 'POST' and 'flag_sponsor' in request.form %}
+        <div class="modal show" id="flagModal" tabindex="-1" role="dialog" aria-labelledby="flagSponsorModalLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="flagSponsorModalLabel">Flag Sponsor</h5>
+                        <a href="{{ url_for('user_a_find') }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ url_for('flag_sponsor' , sponsor_id = sponsor.SponsorID) }}" method="POST" >
+                            <input type="hidden" name="flag_sponsor" value="{{ request.form['flag_sponsor'] }}">
+                            <div class="form-group">
+                                <label for="reason">Reason for Flagging:</label>
+                                <textarea name="reason" class="form-control" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-danger">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+
+
+        <!-- Flag Influencer Modal -->
+        {% if request.method == 'POST' and 'flag_influencer' in request.form %}
+        <div class="modal show" id="flagModal" tabindex="-1" role="dialog" aria-labelledby="flagInfluencerModalLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="flagInfluencerModalLabel">Flag Influencer</h5>
+                        <a href="{{ url_for('user_a_find') }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <form  action="{{ url_for('flag_influencer' , influencer_id = influencer.InfluencerID) }}" method="POST">
+                            <input type="hidden" name="flag_influencer" value="{{ request.form['flag_influencer'] }}">
+                            <div class="form-group">
+                                <label for="reason">Reason for Flagging:</label>
+                                <textarea name="reason" class="form-control" required></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-danger">Submit</button>
+                                <a href="{{ url_for('user_a_find') }}" class="btn btn-secondary">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+
+        
+
+        
+
+
+        
+
+
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+</body>
+</html>
+
+
+-----------------------------------------a_find.html---------------------------------------------------
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Find Page </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/s_home_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+
+        /* Search and Filter */
+        .search-filter-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .search-bar {
+            display: flex;
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .search-bar input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-right: 5px;
+            max-width: 200px;
+        }
+
+        .search-bar button {
+            padding: 10px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+
+        .modal-dialog {
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
+        }
+        
+        .modal-body {
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+
+        /* Campaign Boxes */
+        .campaign-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .campaign-box {
+            display: flex;
+            align-items: center;
+            max-width: 750px;
+            background-color: #ffffff; /* White background for the campaign box */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            margin-bottom: 20px; /* Space below each campaign box */
+            width: 100%;
+            margin-left: 75px; /* Add margin from the left */
+        }
+
+        .campaign-details {
+            flex-grow: 1; /* Grow to take remaining space */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .campaign-name {
+            font-size: 1.1em;
+            color: #333;
+            margin-bottom: 10px; /* Add some space below the campaign name */
+        }
+
+        .campaign-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .view-btn {
+            padding: 10px 20px;
+            background-color: #0088a9;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .view-btn:hover {
+            background-color: #005580; /* Darker blue on hover */
+        }
+
+        .request-btn {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .request-btn:hover {
+            background-color: #1c7430; /* Darker green on hover */
+        }
+
+
+        
+
+    
+        </style>
+</head>
+<body>
+
+    <div class="background-animation">
+        <!-- Circular animations -->
+        <div class="circle-animation circle1"></div>
+        <div class="circle-animation circle2"></div>
+        <div class="circle-animation circle3"></div>
+        <div class="circle-animation circle4"></div>
+    </div>
+
+
+    <header>
+        
+
+        <div class="home-icon">
+            <a href="{{ url_for('user_a_home') }}">
+                <i class="fa fa-house"></i>
+            </a>
+        </div>
+
+
+        <nav>
+            <ul class="nav_links">
+                <li><a href="{{ url_for('user_a_find') }}">Find</a></li>
+                <li><a href="#">Stats</a></li>
+            </ul>
+        </nav>
+        <a class="cta" href="{{url_for('logout')}}"><button>Logout</button></a>
+    </header>
+
+    <main>
+
+        <div class="search-filter-container">
+            <form class="search-bar" action="{{ url_for('user_a_find') }}" method="GET">
+                <input type="text" name="search" placeholder="Search" value="{{ request.args.get('search', '') }}">
+                <button type="submit">Search</button>
+            </form>
+            
+        </div>
+
+        <h3>Campaigns</h3>
+        <div class="campaign-container">
+            {% for campaign in campaigns %}
+            <div class="campaign-box">
+                <div class="campaign-buttons">
+                    <a href="{{ url_for('user_a_find', sponsor_id=campaign.SponsorID, campaign_id=campaign.CampaignID, action='view') }}" class="view-btn">View</a>
+                    
+                    {% if campaign.is_flagged %}
+                        <button class="btn btn-secondary" disabled>Flagged</button>
+                    {% else %}
+                        <form action="{{ url_for('user_a_find') }}" method="POST">
+                            <input type="hidden" name="campaign_id" value="{{ campaign.CampaignID }}">
+                            <button type="submit" class="btn btn-warning">Flag</button>
+                        </form>
+                    {% endif %}
+                </div>
+
+                <h3>{{ campaign.Title }} | {{ campaign.sponsor.user.FullName }}</h3>
+            </div>
+            {% endfor %}
+        </div>
+
+
+
+        <h3>Sponsors</h3>
+        <div class="campaign-container">
+            {% for sponsor in sponsors %}
+            <div class="campaign-box">
+                <div class="campaign-buttons">
+                    <a href="{{ url_for('user_a_find', sponsor_id=sponsor.SponsorID,  action='view') }}" class="view-btn">View</a>
+                    
+
+                    {% if sponsor.is_flagged %}
+                        <button class="btn btn-secondary" disabled>Flagged</button>
+                    {% else %}
+                        <form action="{{ url_for('user_a_find') }}" method="POST">
+                            <input type="hidden" name="campaign_id" value="{{ sponsor.SponsorID }}">
+                            <button type="submit" class="btn btn-warning">Flag</button>
+                        </form>
+                    {% endif %}
+                    
+                    
+                </div>
+
+                <h3> {{ sponsor.user.FullName }}</h3>
+            </div>
+            {% endfor %}
+        </div>
+
+        <h3>Influencers</h3>
+        <div class="campaign-container">
+            {% for influencer in influencers %}
+            <div class="campaign-box">
+                <div class="campaign-buttons">
+                    <a href="{{ url_for('user_a_find', influencer_id=influencer.InfluencerID,  action='view') }}" class="view-btn">View</a>
+                    
+
+                    {% if influencer.is_flagged %}
+                        <button class="btn btn-secondary" disabled>Flagged</button>
+                    {% else %}
+                        <form action="{{ url_for('user_a_find') }}" method="POST">
+                            <input type="hidden" name="campaign_id" value="{{ influencer.InfluencerID }}">
+                            <button type="submit" class="btn btn-warning">Flag</button>
+                        </form>
+                    {% endif %}
+                    
+                    
+                </div>
+
+                <h3> {{ influencer.user.FullName }}</h3>
+            </div>
+            {% endfor %}
+        </div>
+
+        
+
+
+
+        <!-- Modal for Viewing Campaign Details -->
+        {% if campaign_details and not flagging_campaign %}
+        <div class="modal show" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="viewCampaignModalLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewCampaignModalLabel">Campaign Details</h5>
+                        <a href="{{ url_for('user_a_find') }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <h2>{{ campaign_details.Title }}</h2>
+                        <p><strong>Description:</strong> {{ campaign_details.Description }}</p>
+                        <p><strong>Start Date:</strong> {{ campaign_details.StartDate }}</p>
+                        <p><strong>End Date:</strong> {{ campaign_details.EndDate }}</p>
+                        <p><strong>Budget:</strong> {{ campaign_details.Budget }}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('user_a_find') }}" class="btn btn-secondary">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+
+        <!-- Modal for Viewing Sponsor Details -->
+        {% if sponsor_details and not flagging_campaign %}
+        <div class="modal show" id="influencerModal" tabindex="-1" role="dialog" aria-labelledby="viewSponsorModalLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewSponsorModalLabel">Sponsor Details</h5>
+                        <a href="{{ url_for('user_a_find') }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <h2>{{ sponsor_details.user.FullName }}</h2>
+                        <p><strong>Email:</strong> {{ sponsor_details.user.Email }}</p>
+                        <p><strong>PhoneNo:</strong> {{ sponsor_details.user.PhoneNo }}</p>
+                        <p><strong>Gender:</strong> {{ sponsor_details.user.Gender }}</p>
+                        <p><strong>Nationality:</strong> {{ sponsor_details.user.Nationality }}</p>
+                        <p><strong>CompanyName:</strong> {{ sponsor_details.CompanyName }}</p>
+                        <p><strong>CompanyWebsite:</strong> {{ sponsor_details.CompanyWebsite }}</p>
+                        <p><strong>IndustryCategory:</strong> {{ sponsor_details.IndustryCategory }}</p>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('user_a_find') }}" class="btn btn-secondary">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+
+        <!-- Modal for Viewing Influencer Details -->
+        {% if influencer_details and not flagging_campaign %}
+        <div class="modal show" id="influencerModal" tabindex="-1" role="dialog" aria-labelledby="viewInfluencerModalLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewInfluencerModalLabel">Influencer Details</h5>
+                        <a href="{{ url_for('user_a_find') }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <h2>{{ influencer_details.user.FullName }}</h2>
+                        <p><strong>Email:</strong> {{ influencer_details.user.Email }}</p>
+                        <p><strong>PhoneNo:</strong> {{ influencer_details.user.PhoneNo }}</p>
+                        <p><strong>Gender:</strong> {{ influencer_details.user.Gender }}</p>
+                        <p><strong>Nationality:</strong> {{ influencer_details.user.Nationality }}</p>
+                        <p><strong>AccountURLs:</strong> {{ influencer_details.AccountURLs }}</p>
+                        <p><strong>ContentNiche:</strong> {{ influencer_details.ContentNiche }}</p>
+                        
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('user_a_find') }}" class="btn btn-secondary">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+
+        <!-- Flag Campaign Modal -->
+        {% if flagging_campaign %}
+        <div class="modal show" id="flagModal" tabindex="-1" role="dialog" aria-labelledby="flagCampaignModalLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="flagCampaignModalLabel">Flag Campaign</h5>
+                        <a href="{{ url_for('user_a_find') }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <p>Please provide a reason for flagging this campaign:</p>
+                        <form action="{{ url_for('flag_campaign', campaign_id=campaign_id) }}" method="POST">
+                            <div class="form-group">
+                                <textarea name="reason" class="form-control" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-danger">Submit</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('user_a_find') }}" class="btn btn-secondary">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+
+
+
+        <!-- Flag Sponsor Modal -->
+        {% if flagging_sponsor %}
+        <div class="modal show" id="flagModal" tabindex="-1" role="dialog" aria-labelledby="flagSponsorModalLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="flagSponsorModalLabel">Flag Sponsor</h5>
+                        <a href="{{ url_for('user_a_find') }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ url_for('flag_sponsor' , sponsor_id = sponsor.SponsorID) }}" method="POST" >
+                            <input type="hidden" name="flag_sponsor" value="{{ request.form['flag_sponsor'] }}">
+                            <div class="form-group">
+                                <label for="reason">Reason for Flagging:</label>
+                                <textarea name="reason" class="form-control" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-danger">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+
+
+        <!-- Flag Influencer Modal -->
+        {% if flagging_influencer %}
+        <div class="modal show" id="flagModal" tabindex="-1" role="dialog" aria-labelledby="flagInfluencerModalLabel" aria-modal="true" style="display: block;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="flagInfluencerModalLabel">Flag Influencer</h5>
+                        <a href="{{ url_for('user_a_find') }}" class="close" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                    <div class="modal-body">
+                        <form  action="{{ url_for('flag_influencer' , influencer_id = influencer.InfluencerID) }}" method="POST">
+                            <input type="hidden" name="flag_influencer" value="{{ request.form['flag_influencer'] }}">
+                            <div class="form-group">
+                                <label for="reason">Reason for Flagging:</label>
+                                <textarea name="reason" class="form-control" required></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-danger">Submit</button>
+                                <a href="{{ url_for('user_a_find') }}" class="btn btn-secondary">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+
+        
+
+        
+
+
+        
+
+
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+</body>
+</html>
+
+-------------------------------------------------------admin_dashboard.html----------------------------
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Set specific sizes for the canvas elements */
+        canvas {
+            max-width: 300px;
+            max-height: 300px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+    <div>Total Influencers: <span id="total-influencers"></span></div>
+    <div>Total Sponsors: <span id="total-sponsors"></span></div>
+    <div>Total Users: <span id="total-users"></span></div>
+    <div>Total Campaigns: <span id="total-campaigns"></span></div>
+    <!-- Add more totals as needed -->
+
+    <!-- Charts -->
+    <canvas id="influencerDistributionChart"></canvas>
+    <canvas id="sponsorDistributionChart"></canvas>
+    <canvas id="campaignDistributionChart"></canvas>
+    <canvas id="activeCampaignDistributionChart"></canvas>
+
+    <script>
+        // Fetch the data
+        fetch('/admin_dashboard_data')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('total-influencers').textContent = data.total_influencers;
+                document.getElementById('total-sponsors').textContent = data.total_sponsors;
+                document.getElementById('total-users').textContent = data.total_users;
+                document.getElementById('total-campaigns').textContent = data.total_campaigns;
+                // Add more totals as needed
+
+                // Influencer Distribution Chart
+                new Chart(document.getElementById('influencerDistributionChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: data.influencer_distribution.categories,
+                        datasets: [{
+                            data: data.influencer_distribution.counts,
+                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+                        }]
+                    }
+                });
+
+                // Sponsor Distribution Chart
+                new Chart(document.getElementById('sponsorDistributionChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: data.sponsor_distribution.categories,
+                        datasets: [{
+                            data: data.sponsor_distribution.counts,
+                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+                        }]
+                    }
+                });
+
+                // Campaign Distribution Chart
+                new Chart(document.getElementById('campaignDistributionChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: data.campaign_distribution.categories,
+                        datasets: [{
+                            data: data.campaign_distribution.counts,
+                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+                        }]
+                    }
+                });
+
+                // Active Campaign Distribution Chart
+                new Chart(document.getElementById('activeCampaignDistributionChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: data.active_campaign_distribution.statuses,
+                        datasets: [{
+                            data: data.active_campaign_distribution.counts,
+                            backgroundColor: ['#FF6384', '#36A2EB']
+                        }]
+                    }
+                });
+            })
+            .catch(error => console.error('Error fetching dashboard data:', error));
+    </script>
+</body>
+</html>
+
+
+------------------------------------------------------------------
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .dashboard-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .chart-container {
+            flex: 1 1 45%;
+            max-width: 45%;
+            margin-bottom: 20px;
+        }
+
+        canvas {
+            width: 100% !important;
+            height: auto !important;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .totals-container {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .totals-container > div {
+            flex: 1 1 45%;
+            max-width: 45%;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+
+    <div class="totals-container">
+        <div>Total Influencers: <span id="total-influencers"></span></div>
+        <div>Total Sponsors: <span id="total-sponsors"></span></div>
+        <div>Total Users: <span id="total-users"></span></div>
+        <div>Total Campaigns: <span id="total-campaigns"></span></div>
+        <!-- Add more totals as needed -->
+    </div>
+
+    <div class="dashboard-container">
+        <div class="chart-container">
+            <canvas id="influencerDistributionChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="sponsorDistributionChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="campaignDistributionChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="activeCampaignDistributionChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Fetch the data
+        fetch('/admin_dashboard_data')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('total-influencers').textContent = data.total_influencers;
+                document.getElementById('total-sponsors').textContent = data.total_sponsors;
+                document.getElementById('total-users').textContent = data.total_users;
+                document.getElementById('total-campaigns').textContent = data.total_campaigns;
+                // Add more totals as needed
+
+                // Influencer Distribution Chart
+                new Chart(document.getElementById('influencerDistributionChart'), {
+                    type: 'pie',
+                    data: {
+                        labels: data.influencer_distribution.categories,
+                        datasets: [{
+                            data: data.influencer_distribution.counts,
+                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+                        }]
+                    }
+                });
+
+                // Sponsor Distribution Chart
+                new Chart(document.getElementById('sponsorDistributionChart'), {
+                    type: 'pie',
+                    data: {
+                        labels: data.sponsor_distribution.categories,
+                        datasets: [{
+                            data: data.sponsor_distribution.counts,
+                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+                        }]
+                    }
+                });
+
+                // Campaign Distribution Chart
+                new Chart(document.getElementById('campaignDistributionChart'), {
+                    type: 'pie',
+                    data: {
+                        labels: data.campaign_distribution.categories,
+                        datasets: [{
+                            data: data.campaign_distribution.counts,
+                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+                        }]
+                    }
+                });
+
+                // Active Campaign Distribution Chart
+                new Chart(document.getElementById('activeCampaignDistributionChart'), {
+                    type: 'pie',
+                    data: {
+                        labels: data.active_campaign_distribution.statuses,
+                        datasets: [{
+                            data: data.active_campaign_distribution.counts,
+                            backgroundColor: ['#FF6384', '#36A2EB']
+                        }]
+                    }
+                });
+            });
+    </script>
+</body>
+</html>
+
+
+------------------------------------
+
+fetch('/admin_dashboard_data')
+            .then(response => response.json())
+            .then(data => {
+                // Populate cards with data
+                document.getElementById('total-influencers').textContent = data.total_influencers;
+                document.getElementById('total-sponsors').textContent = data.total_sponsors;
+                document.getElementById('total-users').textContent = data.total_users;
+                document.getElementById('total-campaigns').textContent = data.total_campaigns;
+                document.getElementById('total-messages').textContent = data.total_messages;
+                document.getElementById('flagged-sponsors').textContent = data.total_flagged_sponsors;
+                document.getElementById('flagged-influencers').textContent = data.total_flagged_influencers;
+                document.getElementById('flagged-campaigns').textContent = data.total_flagged_campaigns;
+
+                // Create charts
+                new Chart(document.getElementById('influencerDistributionChart'), {
+                    type: 'pie',
+                    data: {
+                        labels: data.influencer_distribution.categories,
+                        datasets: [{
+                            data: data.influencer_distribution.counts,
+                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+                        }]
+                    }
+                });
+
+                new Chart(document.getElementById('sponsorDistributionChart'), {
+                    type: 'pie',
+                    data: {
+                        labels: data.sponsor_distribution.categories,
+                        datasets: [{
+                            data: data.sponsor_distribution.counts,
+                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+                        }]
+                    }
+                });
+
+                new Chart(document.getElementById('campaignDistributionChart'), {
+                    type: 'pie',
+                    data: {
+                        labels: data.campaign_distribution.categories,
+                        datasets: [{
+                            data: data.campaign_distribution.counts,
+                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+                        }]
+                    }
+                });
+
+                new Chart(document.getElementById('activeCampaignDistributionChart'), {
+                    type: 'pie',
+                    data: {
+                        labels: data.active_campaign_distribution.statuses,
+                        datasets: [{
+                            data: data.active_campaign_distribution.counts,
+                            backgroundColor: ['#FF6384', '#36A2EB']
+                        }]
+                    }
+                });
+            });
+
